@@ -1,0 +1,194 @@
+%implements s6_b0_e8s3r_Start "C"
+
+%function Start(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcSetupRuntimeResourcesFcnOfS6B0 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 0, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS6B1 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 1, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS5B0 = OpaqueTLCBlockFcn("SetupRuntimeResources", 5, 0, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS3B0 = OpaqueTLCBlockFcn("SetupRuntimeResources", 3, 0, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS3B3 = OpaqueTLCBlockFcn("SetupRuntimeResources", 3, 3, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS6B31 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 31, 0, 11)
+%assign tlcSetupRuntimeResourcesFcnOfS6B32 = OpaqueTLCBlockFcn("SetupRuntimeResources", 6, 32, 0, 11)
+%assign tlcStartFcnOfS6B0 = OpaqueTLCBlockFcn("Start", 6, 0, 0, 11)
+%assign tlcStartFcnOfS6B1 = OpaqueTLCBlockFcn("Start", 6, 1, 0, 11)
+%assign tlcStartFcnOfS6B2 = OpaqueTLCBlockFcn("Start", 6, 2, 0, 11)
+%assign tlcStartFcnOfS6B9 = OpaqueTLCBlockFcn("Start", 6, 9, 0, 11)
+%assign tlcStartFcnOfS6B10 = OpaqueTLCBlockFcn("Start", 6, 10, 0, 11)
+%assign tlcStartFcnOfS5B0 = OpaqueTLCBlockFcn("Start", 5, 0, 0, 11)
+%assign tlcStartFcnOfS3B0 = OpaqueTLCBlockFcn("Start", 3, 0, 0, 11)
+%assign tlcStartFcnOfS3B3 = OpaqueTLCBlockFcn("Start", 3, 3, 0, 11)
+%assign tlcStartFcnOfS6B28 = OpaqueTLCBlockFcn("Start", 6, 28, 0, 11)
+%assign tlcStartFcnOfS6B29 = OpaqueTLCBlockFcn("Start", 6, 29, 0, 11)
+%assign tlcStartFcnOfS6B30 = OpaqueTLCBlockFcn("Start", 6, 30, 0, 11)
+%assign tlcStartFcnOfS6B31 = OpaqueTLCBlockFcn("Start", 6, 31, 0, 11)
+%assign tlcStartFcnOfS6B32 = OpaqueTLCBlockFcn("Start", 6, 32, 0, 11)
+%assign tlcStartFcnOfS6B33 = OpaqueTLCBlockFcn("Start", 6, 33, 0, 11)
+%assign tlcStartFcnOfS6B35 = OpaqueTLCBlockFcn("Start", 6, 35, 0, 11)
+%assign tlcStartFcnOfS6B36 = OpaqueTLCBlockFcn("Start", 6, 36, 0, 11)
+%assign tlcStartFcnOfS6B37 = OpaqueTLCBlockFcn("Start", 6, 37, 0, 11)
+%assign tlcStartFcnOfS6B41 = OpaqueTLCBlockFcn("Start", 6, 41, 0, 11)
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B0)
+/* SetupRuntimeResources for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcSetupRuntimeResourcesFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B1)
+/* SetupRuntimeResources for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcSetupRuntimeResourcesFcnOfS6B1>\
+%endif
+%assign   SetupRuntimeResources_open_TrueRMS_6_15 = ""
+%openfile SetupRuntimeResources_open_TrueRMS_6_15
+
+/* SetupRuntimeResources for Enabled SubSystem: '<S7>/TrueRMS ' */
+%closefile SetupRuntimeResources_open_TrueRMS_6_15
+
+%assign    SetupRuntimeResources_body_TrueRMS_6_15 = ""
+%openfile  SetupRuntimeResources_body_TrueRMS_6_15
+
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS5B0)
+/* SetupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S39>/S-Function' */
+%<tlcSetupRuntimeResourcesFcnOfS5B0>\
+%endif
+%closefile SetupRuntimeResources_body_TrueRMS_6_15
+
+%assign    SetupRuntimeResources_close_TrueRMS_6_15 = ""
+%openfile  SetupRuntimeResources_close_TrueRMS_6_15
+
+/* End of SetupRuntimeResources for SubSystem: '<S7>/TrueRMS ' */
+%closefile SetupRuntimeResources_close_TrueRMS_6_15
+%<SLibCG_DumpSSCode(SetupRuntimeResources_open_TrueRMS_6_15, SetupRuntimeResources_body_TrueRMS_6_15, SetupRuntimeResources_close_TrueRMS_6_15)>
+
+
+%assign   SetupRuntimeResources_open_RMS_6_17 = ""
+%openfile SetupRuntimeResources_open_RMS_6_17
+
+/* SetupRuntimeResources for Enabled SubSystem: '<S7>/RMS ' */
+%closefile SetupRuntimeResources_open_RMS_6_17
+
+%assign    SetupRuntimeResources_body_RMS_6_17 = ""
+%openfile  SetupRuntimeResources_body_RMS_6_17
+
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS3B0)
+/* SetupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S36>/S-Function' */
+%<tlcSetupRuntimeResourcesFcnOfS3B0>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS3B3)
+/* SetupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S34>/S-Function' */
+%<tlcSetupRuntimeResourcesFcnOfS3B3>\
+%endif
+%closefile SetupRuntimeResources_body_RMS_6_17
+
+%assign    SetupRuntimeResources_close_RMS_6_17 = ""
+%openfile  SetupRuntimeResources_close_RMS_6_17
+
+/* End of SetupRuntimeResources for SubSystem: '<S7>/RMS ' */
+%closefile SetupRuntimeResources_close_RMS_6_17
+%<SLibCG_DumpSSCode(SetupRuntimeResources_open_RMS_6_17, SetupRuntimeResources_body_RMS_6_17, SetupRuntimeResources_close_RMS_6_17)>
+
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B31)
+
+/* SetupRuntimeResources for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcSetupRuntimeResourcesFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS6B32)
+/* SetupRuntimeResources for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcSetupRuntimeResourcesFcnOfS6B32>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B0)
+/* Start for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcStartFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B1)
+/* Start for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcStartFcnOfS6B1>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B2)
+/* Start for S-Function (sfun_spssw_discc): '<S41>/State-Space' */
+%<tlcStartFcnOfS6B2>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B9)
+/* Start for Scope: '<Root>/Corriente Inversor Diesel' */
+%<tlcStartFcnOfS6B9>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B10)
+/* Start for Scope: '<Root>/Corriente Inversor Fotovoltaico' */
+%<tlcStartFcnOfS6B10>\
+%endif
+/* Start for Enabled SubSystem: '<S7>/TrueRMS ' */
+/* Start for Constant: '<S38>/K1' */
+MPC_B.K1 = MPC_P.K1_Value_o;
+%if !WHITE_SPACE(tlcStartFcnOfS5B0)
+/* Start for S-Function (sfun_discreteVariableDelay): '<S39>/S-Function' */
+%<tlcStartFcnOfS5B0>\
+/* End of Start for SubSystem: '<S7>/TrueRMS ' */
+
+%endif
+/* Start for Enabled SubSystem: '<S7>/RMS ' */
+/* Start for Constant: '<S35>/K1' */
+MPC_B.K1_j = MPC_P.K1_Value;
+%if !WHITE_SPACE(tlcStartFcnOfS3B0)
+/* Start for S-Function (sfun_discreteVariableDelay): '<S36>/S-Function' */
+%<tlcStartFcnOfS3B0>\
+%endif
+/* Start for Constant: '<S33>/K1' */
+MPC_B.K1_l = MPC_P.K1_Value_d;
+%if !WHITE_SPACE(tlcStartFcnOfS3B3)
+/* Start for S-Function (sfun_discreteVariableDelay): '<S34>/S-Function' */
+%<tlcStartFcnOfS3B3>\
+/* End of Start for SubSystem: '<S7>/RMS ' */
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B28)
+
+/* Start for Scope: '<Root>/Input' */
+%<tlcStartFcnOfS6B28>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B29)
+/* Start for Scope: '<Root>/Input1' */
+%<tlcStartFcnOfS6B29>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B30)
+/* Start for Scope: '<Root>/Input2' */
+%<tlcStartFcnOfS6B30>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B31)
+/* Start for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcStartFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B32)
+/* Start for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcStartFcnOfS6B32>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B33)
+/* Start for Scope: '<Root>/StatusDiesel' */
+%<tlcStartFcnOfS6B33>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B35)
+/* Start for Scope: '<Root>/StatusPV' */
+%<tlcStartFcnOfS6B35>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B36)
+/* Start for Scope: '<Root>/Valores RMS' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<tlcStartFcnOfS6B36>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B37)
+/* Start for Scope: '<Root>/Corriente en Carga' */
+%<tlcStartFcnOfS6B37>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS6B41)
+/* Start for Scope: '<Root>/Tension enCarga' */
+%<tlcStartFcnOfS6B41>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function StartFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Start(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 11, fcnProtoType)>
+%endfunction

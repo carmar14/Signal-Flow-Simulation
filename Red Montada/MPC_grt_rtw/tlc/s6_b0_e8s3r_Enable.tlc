@@ -1,0 +1,37 @@
+%implements s6_b0_e8s3r_Enable "C"
+
+%function Enable(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcEnableFcnOfS6B0 = OpaqueTLCBlockFcn("Enable", 6, 0, 0, 16)
+%assign tlcEnableFcnOfS6B1 = OpaqueTLCBlockFcn("Enable", 6, 1, 0, 16)
+%assign tlcEnableFcnOfS6B31 = OpaqueTLCBlockFcn("Enable", 6, 31, 0, 16)
+%assign tlcEnableFcnOfS6B32 = OpaqueTLCBlockFcn("Enable", 6, 32, 0, 16)
+%if !WHITE_SPACE(tlcEnableFcnOfS6B0)
+/* Enable for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcEnableFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS6B1)
+/* Enable for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcEnableFcnOfS6B1>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS6B31)
+/* Enable for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcEnableFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS6B32)
+/* Enable for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcEnableFcnOfS6B32>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function EnableFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Enable(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 16, fcnProtoType)>
+%endfunction

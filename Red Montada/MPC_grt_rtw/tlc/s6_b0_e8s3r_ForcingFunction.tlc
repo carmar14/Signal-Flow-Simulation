@@ -1,0 +1,37 @@
+%implements s6_b0_e8s3r_ForcingFunction "C"
+
+%function ForcingFunction(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcForcingFunctionFcnOfS6B0 = OpaqueTLCBlockFcn("ForcingFunction", 6, 0, 0, 15)
+%assign tlcForcingFunctionFcnOfS6B1 = OpaqueTLCBlockFcn("ForcingFunction", 6, 1, 0, 15)
+%assign tlcForcingFunctionFcnOfS6B31 = OpaqueTLCBlockFcn("ForcingFunction", 6, 31, 0, 15)
+%assign tlcForcingFunctionFcnOfS6B32 = OpaqueTLCBlockFcn("ForcingFunction", 6, 32, 0, 15)
+%if !WHITE_SPACE(tlcForcingFunctionFcnOfS6B0)
+/* ForcingFunction for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcForcingFunctionFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcForcingFunctionFcnOfS6B1)
+/* ForcingFunction for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcForcingFunctionFcnOfS6B1>\
+%endif
+%if !WHITE_SPACE(tlcForcingFunctionFcnOfS6B31)
+/* ForcingFunction for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcForcingFunctionFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcForcingFunctionFcnOfS6B32)
+/* ForcingFunction for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcForcingFunctionFcnOfS6B32>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function ForcingFunctionFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void ForcingFunction(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 15, fcnProtoType)>
+%endfunction

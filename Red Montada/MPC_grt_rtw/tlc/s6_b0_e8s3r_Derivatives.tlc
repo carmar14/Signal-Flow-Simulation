@@ -1,0 +1,37 @@
+%implements s6_b0_e8s3r_Derivatives "C"
+
+%function Derivatives(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcDerivativesFcnOfS6B0 = OpaqueTLCBlockFcn("Derivatives", 6, 0, 0, 14)
+%assign tlcDerivativesFcnOfS6B1 = OpaqueTLCBlockFcn("Derivatives", 6, 1, 0, 14)
+%assign tlcDerivativesFcnOfS6B31 = OpaqueTLCBlockFcn("Derivatives", 6, 31, 0, 14)
+%assign tlcDerivativesFcnOfS6B32 = OpaqueTLCBlockFcn("Derivatives", 6, 32, 0, 14)
+%if !WHITE_SPACE(tlcDerivativesFcnOfS6B0)
+/* Derivatives for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcDerivativesFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcDerivativesFcnOfS6B1)
+/* Derivatives for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcDerivativesFcnOfS6B1>\
+%endif
+%if !WHITE_SPACE(tlcDerivativesFcnOfS6B31)
+/* Derivatives for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcDerivativesFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcDerivativesFcnOfS6B32)
+/* Derivatives for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcDerivativesFcnOfS6B32>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function DerivativesFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Derivatives(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 14, fcnProtoType)>
+%endfunction

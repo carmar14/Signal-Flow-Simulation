@@ -1,0 +1,8 @@
+%implements s6_b0_e8s3r_ModuleConstants "C"
+
+%function ModuleConstants(block) Output
+
+
+/* Named constants for MATLAB Function: '<S12>/optimizer' */
+#define MPC_ny (2.0)
+%endfunction

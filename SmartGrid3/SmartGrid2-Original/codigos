@@ -1,0 +1,6 @@
+inversor: 
+gcc ert_main.c inversor.c inversor_data.c MPC.c rtGetInf.c rtGetNaN.c rt_nonfinite.c  rt_backsubrr_dbl.c rt_forwardsubrr_dbl.c rt_lu_real.c rt_matrixlib_dbl.c -lm -lwiringPi
+
+
+diesel:
+gcc ert_main.c Motor_Diesel_paC.c inversor.c inversor_data.c MPC.c rtGetInf.c rtGetNaN.c rt_nonfinite.c  rt_backsubrr_dbl.c rt_forwardsubrr_dbl.c rt_lu_real.c rt_matrixlib_dbl.c -lm -lwiringPi

@@ -1,0 +1,168 @@
+%implements s6_b0_e8s3r_Terminate "C"
+
+%function Terminate(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcTerminateFcnOfS6B0 = OpaqueTLCBlockFcn("Terminate", 6, 0, 0, 17)
+%assign tlcTerminateFcnOfS6B1 = OpaqueTLCBlockFcn("Terminate", 6, 1, 0, 17)
+%assign tlcTerminateFcnOfS6B2 = OpaqueTLCBlockFcn("Terminate", 6, 2, 0, 17)
+%assign tlcTerminateFcnOfS5B0 = OpaqueTLCBlockFcn("Terminate", 5, 0, 0, 17)
+%assign tlcTerminateFcnOfS3B0 = OpaqueTLCBlockFcn("Terminate", 3, 0, 0, 17)
+%assign tlcTerminateFcnOfS3B3 = OpaqueTLCBlockFcn("Terminate", 3, 3, 0, 17)
+%assign tlcTerminateFcnOfS6B31 = OpaqueTLCBlockFcn("Terminate", 6, 31, 0, 17)
+%assign tlcTerminateFcnOfS6B32 = OpaqueTLCBlockFcn("Terminate", 6, 32, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B0 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 0, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B1 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 1, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS5B0 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 5, 0, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS3B0 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 3, 0, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS3B3 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 3, 3, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B31 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 31, 0, 17)
+%assign tlcCleanupRuntimeResourcesFcnOfS6B32 = OpaqueTLCBlockFcn("CleanupRuntimeResources", 6, 32, 0, 17)
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B0)
+/* Terminate for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcTerminateFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B1)
+/* Terminate for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcTerminateFcnOfS6B1>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B2)
+/* Terminate for S-Function (sfun_spssw_discc): '<S41>/State-Space' */
+%<tlcTerminateFcnOfS6B2>\
+%endif
+%assign   Terminate_open_TrueRMS_6_15 = ""
+%openfile Terminate_open_TrueRMS_6_15
+
+/* Terminate for Enabled SubSystem: '<S7>/TrueRMS ' */
+%closefile Terminate_open_TrueRMS_6_15
+
+%assign    Terminate_body_TrueRMS_6_15 = ""
+%openfile  Terminate_body_TrueRMS_6_15
+
+%if !WHITE_SPACE(tlcTerminateFcnOfS5B0)
+/* Terminate for S-Function (sfun_discreteVariableDelay): '<S39>/S-Function' */
+%<tlcTerminateFcnOfS5B0>\
+%endif
+%closefile Terminate_body_TrueRMS_6_15
+
+%assign    Terminate_close_TrueRMS_6_15 = ""
+%openfile  Terminate_close_TrueRMS_6_15
+
+/* End of Terminate for SubSystem: '<S7>/TrueRMS ' */
+%closefile Terminate_close_TrueRMS_6_15
+%<SLibCG_DumpSSCode(Terminate_open_TrueRMS_6_15, Terminate_body_TrueRMS_6_15, Terminate_close_TrueRMS_6_15)>
+
+
+%assign   Terminate_open_RMS_6_17 = ""
+%openfile Terminate_open_RMS_6_17
+
+/* Terminate for Enabled SubSystem: '<S7>/RMS ' */
+%closefile Terminate_open_RMS_6_17
+
+%assign    Terminate_body_RMS_6_17 = ""
+%openfile  Terminate_body_RMS_6_17
+
+%if !WHITE_SPACE(tlcTerminateFcnOfS3B0)
+/* Terminate for S-Function (sfun_discreteVariableDelay): '<S36>/S-Function' */
+%<tlcTerminateFcnOfS3B0>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS3B3)
+/* Terminate for S-Function (sfun_discreteVariableDelay): '<S34>/S-Function' */
+%<tlcTerminateFcnOfS3B3>\
+%endif
+%closefile Terminate_body_RMS_6_17
+
+%assign    Terminate_close_RMS_6_17 = ""
+%openfile  Terminate_close_RMS_6_17
+
+/* End of Terminate for SubSystem: '<S7>/RMS ' */
+%closefile Terminate_close_RMS_6_17
+%<SLibCG_DumpSSCode(Terminate_open_RMS_6_17, Terminate_body_RMS_6_17, Terminate_close_RMS_6_17)>
+
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B31)
+
+/* Terminate for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcTerminateFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcTerminateFcnOfS6B32)
+/* Terminate for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcTerminateFcnOfS6B32>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B0)
+/* CleanupRuntimeResources for M-S-Function: '<Root>/UDP Receive Fuente Diesel' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B0>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B1)
+/* CleanupRuntimeResources for M-S-Function: '<Root>/UDP Receive Fuente PV' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B1>\
+%endif
+%assign   CleanupRuntimeResources_open_TrueRMS_6_15 = ""
+%openfile CleanupRuntimeResources_open_TrueRMS_6_15
+
+/* CleanupRuntimeResources for Enabled SubSystem: '<S7>/TrueRMS ' */
+%closefile CleanupRuntimeResources_open_TrueRMS_6_15
+
+%assign    CleanupRuntimeResources_body_TrueRMS_6_15 = ""
+%openfile  CleanupRuntimeResources_body_TrueRMS_6_15
+
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS5B0)
+/* CleanupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S39>/S-Function' */
+%<tlcCleanupRuntimeResourcesFcnOfS5B0>\
+%endif
+%closefile CleanupRuntimeResources_body_TrueRMS_6_15
+
+%assign    CleanupRuntimeResources_close_TrueRMS_6_15 = ""
+%openfile  CleanupRuntimeResources_close_TrueRMS_6_15
+
+/* End of CleanupRuntimeResources for SubSystem: '<S7>/TrueRMS ' */
+%closefile CleanupRuntimeResources_close_TrueRMS_6_15
+%<SLibCG_DumpSSCode(CleanupRuntimeResources_open_TrueRMS_6_15, CleanupRuntimeResources_body_TrueRMS_6_15, CleanupRuntimeResources_close_TrueRMS_6_15)>
+
+
+%assign   CleanupRuntimeResources_open_RMS_6_17 = ""
+%openfile CleanupRuntimeResources_open_RMS_6_17
+
+/* CleanupRuntimeResources for Enabled SubSystem: '<S7>/RMS ' */
+%closefile CleanupRuntimeResources_open_RMS_6_17
+
+%assign    CleanupRuntimeResources_body_RMS_6_17 = ""
+%openfile  CleanupRuntimeResources_body_RMS_6_17
+
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS3B0)
+/* CleanupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S36>/S-Function' */
+%<tlcCleanupRuntimeResourcesFcnOfS3B0>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS3B3)
+/* CleanupRuntimeResources for S-Function (sfun_discreteVariableDelay): '<S34>/S-Function' */
+%<tlcCleanupRuntimeResourcesFcnOfS3B3>\
+%endif
+%closefile CleanupRuntimeResources_body_RMS_6_17
+
+%assign    CleanupRuntimeResources_close_RMS_6_17 = ""
+%openfile  CleanupRuntimeResources_close_RMS_6_17
+
+/* End of CleanupRuntimeResources for SubSystem: '<S7>/RMS ' */
+%closefile CleanupRuntimeResources_close_RMS_6_17
+%<SLibCG_DumpSSCode(CleanupRuntimeResources_open_RMS_6_17, CleanupRuntimeResources_body_RMS_6_17, CleanupRuntimeResources_close_RMS_6_17)>
+
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B31)
+
+/* CleanupRuntimeResources for M-S-Function: '<Root>/Ref para Inv Diesel' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B31>\
+%endif
+%if !WHITE_SPACE(tlcCleanupRuntimeResourcesFcnOfS6B32)
+/* CleanupRuntimeResources for M-S-Function: '<Root>/Ref para Inv PV' */
+%<tlcCleanupRuntimeResourcesFcnOfS6B32>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function TerminateFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Terminate(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 17, fcnProtoType)>
+%endfunction

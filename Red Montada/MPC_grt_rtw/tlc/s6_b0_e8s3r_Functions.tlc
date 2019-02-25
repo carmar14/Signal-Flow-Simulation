@@ -1,0 +1,1408 @@
+%implements s6_b0_e8s3r_Functions "C"
+
+%function rt_hypotd_snf_Fcn0(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T y;
+real_T a;
+a = fabs(u0);
+y = fabs(u1);
+if (a < y) {
+    a /= y;
+    y *= sqrt(a * a + 1.0);
+} else if (a > y) {
+    y /= a;
+    y = sqrt(y * y + 1.0) * a;
+} else {
+    if (!rtIsNaN(y)) {
+        y = a * 1.4142135623730951;
+    }
+}
+return y;
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+extern real_T rt_hypotd_snf(\
+%assign comma = ""
+%<comma>real_T u0\
+%assign comma = ", "
+%<comma>real_T u1\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 0, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_Unconstrained_Fcn1(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+int16_T i;
+for (i = 1; i <= n; i++) {
+    x[i - 1] = (-b_Hinv[i - 1] * f[0] + -b_Hinv[i + 2] * f[1]) + -b_Hinv[i + 5] * f[2];
+}
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_Unconstrained(\
+%assign comma = ""
+%<comma>const real_T b_Hinv[9]\
+%assign comma = ", "
+%<comma>const real_T f[3]\
+%assign comma = ", "
+%<comma>real_T x[3]\
+%assign comma = ", "
+%<comma>int16_T n\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 1, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_norm_Fcn2(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T y;
+real_T scale;
+real_T absxk;
+real_T t;
+scale = 2.2250738585072014E-308;
+absxk = fabs(x[0]);
+if (absxk > 2.2250738585072014E-308) {
+    y = 1.0;
+    scale = absxk;
+} else {
+    t = absxk / 2.2250738585072014E-308;
+    y = t * t;
+}
+absxk = fabs(x[1]);
+if (absxk > scale) {
+    t = scale / absxk;
+    y = y * t * t + 1.0;
+    scale = absxk;
+} else {
+    t = absxk / scale;
+    y += t * t;
+}
+absxk = fabs(x[2]);
+if (absxk > scale) {
+    t = scale / absxk;
+    y = y * t * t + 1.0;
+    scale = absxk;
+} else {
+    t = absxk / scale;
+    y += t * t;
+}
+return scale * sqrt(y);
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static real_T MPC_norm(\
+%assign comma = ""
+%<comma>const real_T x[3]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 2, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_abs_h_Fcn3(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+int32_T k;
+for (k = 0; k < 6; k++) {
+    y[k] = fabs(x[k]);
+}
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_abs_h(\
+%assign comma = ""
+%<comma>const real_T x[6]\
+%assign comma = ", "
+%<comma>real_T y[6]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 3, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_xnrm2_Fcn4(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T y;
+real_T scale;
+int32_T kend;
+real_T absxk;
+real_T t;
+int32_T k;
+y = 0.0;
+if (!(n < 1)) {
+    if (n == 1) {
+        y = fabs(x[ix0 - 1]);
+    } else {
+        scale = 2.2250738585072014E-308;
+        kend = (ix0 + n) - 1;
+        for (k = ix0; k <= kend; k++) {
+            absxk = fabs(x[k - 1]);
+            if (absxk > scale) {
+                t = scale / absxk;
+                y = y * t * t + 1.0;
+                scale = absxk;
+            } else {
+                t = absxk / scale;
+                y += t * t;
+            }
+        }
+        y = scale * sqrt(y);
+    }
+}
+return y;
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static real_T MPC_xnrm2(\
+%assign comma = ""
+%<comma>int32_T n\
+%assign comma = ", "
+%<comma>const real_T x[9]\
+%assign comma = ", "
+%<comma>int32_T ix0\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 4, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_xgeqrf_Fcn5(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T work[3];
+real_T b_atmp;
+real_T xnorm;
+int32_T knt;
+int32_T lastv;
+int32_T lastc;
+int32_T coltop;
+int32_T ia;
+int32_T ix;
+real_T b_c;
+int32_T g;
+int32_T b_ia;
+int32_T b_ix;
+int32_T exitg1;
+boolean_T exitg2;
+%assign _modelSS = ""
+
+work[0] = 0.0;
+work[1] = 0.0;
+work[2] = 0.0;
+b_atmp = b_A[0];
+b_c = 0.0;
+%if SLibCG_FcnCallArgAccessed(0,5,0,1)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+xnorm = %<(SLibCGCallSubFcn("MPC_xnrm2", ["2", "b_A", "2"], 0, 5, 0))>;
+if (xnorm != 0.0) {
+%if SLibCG_FcnCallArgAccessed(0,5,1,0)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+    xnorm = %<(SLibCGCallSubFcn("rt_hypotd_snf", ["b_A[0]", "xnorm"], 0, 5, 1))>;
+    if (b_A[0] >= 0.0) {
+        xnorm = -xnorm;
+    }
+    if (fabs(xnorm) < 1.0020841800044864E-292) {
+        knt = 0;
+        do {
+            knt++;
+            for (lastc = 1; lastc + 1 < 4; lastc++) {
+                b_A[lastc] *= 9.9792015476736E+291;
+            }
+            xnorm *= 9.9792015476736E+291;
+            b_atmp *= 9.9792015476736E+291;
+        } while (!(fabs(xnorm) >= 1.0020841800044864E-292));
+%if SLibCG_FcnCallArgAccessed(0,5,2,1)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+        xnorm = %<(SLibCGCallSubFcn("rt_hypotd_snf", ["b_atmp", "%<(SLibCGCallSubFcn("MPC_xnrm2", ["2", "b_A", "2"], 0, 5, 2))>"], 0, 5, 3))>;
+        if (b_atmp >= 0.0) {
+            xnorm = -xnorm;
+        }
+        b_c = (xnorm - b_atmp) / xnorm;
+        b_atmp = 1.0 / (b_atmp - xnorm);
+        for (lastc = 1; lastc + 1 < 4; lastc++) {
+            b_A[lastc] *= b_atmp;
+        }
+        for (lastv = 1; lastv <= knt; lastv++) {
+            xnorm *= 1.0020841800044864E-292;
+        }
+        b_atmp = xnorm;
+    } else {
+        b_c = (xnorm - b_A[0]) / xnorm;
+        b_atmp = 1.0 / (b_A[0] - xnorm);
+        for (lastv = 1; lastv + 1 < 4; lastv++) {
+            b_A[lastv] *= b_atmp;
+        }
+        b_atmp = xnorm;
+    }
+}
+tau[0] = b_c;
+b_A[0] = b_atmp;
+b_atmp = b_A[0];
+b_A[0] = 1.0;
+knt = 3;
+if (b_c != 0.0) {
+    lastv = 3;
+    lastc = 2;
+    while ((lastv > 0) && (b_A[lastc] == 0.0)) {
+        lastv--;
+        lastc--;
+    }
+    lastc = 2;
+    exitg2 = false;
+    while ((!exitg2) && (lastc > 0)) {
+        coltop = (lastc - 1) * 3 + 4;
+        ia = coltop;
+        do {
+            exitg1 = 0;
+            if (ia <= (coltop + lastv) - 1) {
+                if (b_A[ia - 1] != 0.0) {
+                    exitg1 = 1;
+                } else {
+                    ia++;
+                }
+            } else {
+                lastc--;
+                exitg1 = 2;
+            }
+        } while (exitg1 == 0);
+        if (exitg1 == 1) {
+            exitg2 = true;
+        }
+    }
+} else {
+    lastv = 0;
+    lastc = 0;
+}
+if (lastv > 0) {
+    if (lastc != 0) {
+        for (coltop = 1; coltop <= lastc; coltop++) {
+            work[coltop - 1] = 0.0;
+        }
+        coltop = 0;
+        ia = (lastc - 1) * 3 + 4;
+        for (b_ix = 4; b_ix <= ia; b_ix += 3) {
+            ix = 0;
+            b_c = 0.0;
+            g = (b_ix + lastv) - 1;
+            for (b_ia = b_ix; b_ia <= g; b_ia++) {
+                b_c += b_A[b_ia - 1] * b_A[ix];
+                ix++;
+            }
+            work[coltop] += b_c;
+            coltop++;
+        }
+    }
+    if (!(-tau[0] == 0.0)) {
+        coltop = 0;
+        for (ia = 1; ia <= lastc; ia++) {
+            if (work[coltop] != 0.0) {
+                b_c = work[coltop] * -tau[0];
+                b_ix = 0;
+                ix = lastv + knt;
+                for (g = knt; g + 1 <= ix; g++) {
+                    b_A[g] += b_A[b_ix] * b_c;
+                    b_ix++;
+                }
+            }
+            coltop++;
+            knt += 3;
+        }
+    }
+}
+b_A[0] = b_atmp;
+b_atmp = b_A[4];
+b_c = 0.0;
+%if SLibCG_FcnCallArgAccessed(0,5,4,1)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+xnorm = %<(SLibCGCallSubFcn("MPC_xnrm2", ["1", "b_A", "6"], 0, 5, 4))>;
+if (xnorm != 0.0) {
+%if SLibCG_FcnCallArgAccessed(0,5,5,0)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+    xnorm = %<(SLibCGCallSubFcn("rt_hypotd_snf", ["b_A[4]", "xnorm"], 0, 5, 5))>;
+    if (b_A[4] >= 0.0) {
+        xnorm = -xnorm;
+    }
+    if (fabs(xnorm) < 1.0020841800044864E-292) {
+        knt = 0;
+        do {
+            knt++;
+            for (lastc = 5; lastc + 1 < 7; lastc++) {
+                b_A[lastc] *= 9.9792015476736E+291;
+            }
+            xnorm *= 9.9792015476736E+291;
+            b_atmp *= 9.9792015476736E+291;
+        } while (!(fabs(xnorm) >= 1.0020841800044864E-292));
+%if SLibCG_FcnCallArgAccessed(0,5,6,1)
+%<SLibCG_AccessArg(0 ,5, 0)>
+%endif
+
+        xnorm = %<(SLibCGCallSubFcn("rt_hypotd_snf", ["b_atmp", "%<(SLibCGCallSubFcn("MPC_xnrm2", ["1", "b_A", "6"], 0, 5, 6))>"], 0, 5, 7))>;
+        if (b_atmp >= 0.0) {
+            xnorm = -xnorm;
+        }
+        b_c = (xnorm - b_atmp) / xnorm;
+        b_atmp = 1.0 / (b_atmp - xnorm);
+        for (lastc = 5; lastc + 1 < 7; lastc++) {
+            b_A[lastc] *= b_atmp;
+        }
+        for (lastv = 1; lastv <= knt; lastv++) {
+            xnorm *= 1.0020841800044864E-292;
+        }
+        b_atmp = xnorm;
+    } else {
+        b_c = (xnorm - b_A[4]) / xnorm;
+        b_atmp = 1.0 / (b_A[4] - xnorm);
+        for (lastv = 5; lastv + 1 < 7; lastv++) {
+            b_A[lastv] *= b_atmp;
+        }
+        b_atmp = xnorm;
+    }
+}
+tau[1] = b_c;
+b_A[4] = b_atmp;
+b_atmp = b_A[4];
+b_A[4] = 1.0;
+knt = 7;
+if (b_c != 0.0) {
+    lastv = 2;
+    lastc = 5;
+    while ((lastv > 0) && (b_A[lastc] == 0.0)) {
+        lastv--;
+        lastc--;
+    }
+    lastc = 1;
+    exitg2 = false;
+    while ((!exitg2) && (lastc > 0)) {
+        ia = 8;
+        do {
+            exitg1 = 0;
+            if (ia <= lastv + 7) {
+                if (b_A[ia - 1] != 0.0) {
+                    exitg1 = 1;
+                } else {
+                    ia++;
+                }
+            } else {
+                lastc = 0;
+                exitg1 = 2;
+            }
+        } while (exitg1 == 0);
+        if (exitg1 == 1) {
+            exitg2 = true;
+        }
+    }
+} else {
+    lastv = 0;
+    lastc = 0;
+}
+if (lastv > 0) {
+    if (lastc != 0) {
+        coltop = 1;
+        while (coltop <= 1) {
+            work[0] = 0.0;
+            coltop = 2;
+        }
+        coltop = 0;
+        b_ix = 8;
+        while (b_ix <= 8) {
+            ix = 4;
+            b_c = 0.0;
+            g = lastv + 7;
+            for (b_ia = 8; b_ia <= g; b_ia++) {
+                b_c += b_A[b_ia - 1] * b_A[ix];
+                ix++;
+            }
+            work[coltop] += b_c;
+            coltop++;
+            b_ix = 11;
+        }
+    }
+    if (!(-tau[1] == 0.0)) {
+        coltop = 0;
+        ia = 1;
+        while (ia <= lastc) {
+            if (work[coltop] != 0.0) {
+                b_c = work[coltop] * -tau[1];
+                b_ix = 4;
+                ix = lastv + knt;
+                for (g = knt; g + 1 <= ix; g++) {
+                    b_A[g] += b_A[b_ix] * b_c;
+                    b_ix++;
+                }
+            }
+            coltop++;
+            knt += 3;
+            ia = 2;
+        }
+    }
+}
+b_A[4] = b_atmp;
+tau[2] = 0.0;
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_xgeqrf(\
+%assign comma = ""
+%<comma>real_T b_A[9]\
+%assign comma = ", "
+%<comma>real_T tau[3]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 5, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_qr_Fcn6(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T c_A[9];
+real_T tau[3];
+int32_T d_i;
+real_T work[3];
+int32_T lastc;
+int32_T coltop;
+int32_T ix;
+real_T c;
+int32_T iac;
+int32_T d;
+int32_T b_ia;
+int32_T jy;
+int32_T exitg1;
+boolean_T exitg2;
+memcpy(&c_A[0], &b_A[0], 9U * sizeof(real_T));
+%<(SLibCGCallSubFcn("MPC_xgeqrf", ["c_A", "tau"], 0, 6, 0))>;
+for (d_i = 0; d_i + 1 < 2; d_i++) {
+    R[d_i] = c_A[d_i];
+}
+for (d_i = 1; d_i + 1 < 4; d_i++) {
+    R[d_i] = 0.0;
+}
+work[0] = 0.0;
+for (d_i = 0; d_i + 1 < 3; d_i++) {
+    R[d_i + 3] = c_A[d_i + 3];
+}
+for (d_i = 2; d_i + 1 < 4; d_i++) {
+    R[d_i + 3] = 0.0;
+}
+work[1] = 0.0;
+for (d_i = 0; d_i + 1 < 4; d_i++) {
+    R[d_i + 6] = c_A[d_i + 6];
+}
+work[2] = 0.0;
+c_A[8] = 1.0 - tau[2];
+for (d_i = 1; d_i < 3; d_i++) {
+    c_A[8 - d_i] = 0.0;
+}
+c_A[4] = 1.0;
+if (tau[1] != 0.0) {
+    d_i = 2;
+    lastc = 5;
+    while ((d_i > 0) && (c_A[lastc] == 0.0)) {
+        d_i--;
+        lastc--;
+    }
+    lastc = 1;
+    exitg2 = false;
+    while ((!exitg2) && (lastc > 0)) {
+        jy = 5;
+        do {
+            exitg1 = 0;
+            if (jy + 3 <= d_i + 7) {
+                if (c_A[jy + 2] != 0.0) {
+                    exitg1 = 1;
+                } else {
+                    jy++;
+                }
+            } else {
+                lastc = 0;
+                exitg1 = 2;
+            }
+        } while (exitg1 == 0);
+        if (exitg1 == 1) {
+            exitg2 = true;
+        }
+    }
+} else {
+    d_i = 0;
+    lastc = 0;
+}
+if (d_i > 0) {
+    if (lastc != 0) {
+        coltop = 1;
+        while (coltop <= 1) {
+            work[0] = 0.0;
+            coltop = 2;
+        }
+        coltop = 0;
+        iac = 8;
+        while (iac <= 8) {
+            ix = 5;
+            c = 0.0;
+            d = d_i + 7;
+            for (b_ia = 8; b_ia <= d; b_ia++) {
+                c += c_A[b_ia - 1] * c_A[ix - 1];
+                ix++;
+            }
+            work[coltop] += c;
+            coltop++;
+            iac = 11;
+        }
+    }
+    if (!(-tau[1] == 0.0)) {
+        coltop = 7;
+        jy = 0;
+        iac = 1;
+        while (iac <= lastc) {
+            if (work[jy] != 0.0) {
+                c = work[jy] * -tau[1];
+                ix = 5;
+                d = d_i + coltop;
+                for (b_ia = coltop; b_ia + 1 <= d; b_ia++) {
+                    c_A[b_ia] += c_A[ix - 1] * c;
+                    ix++;
+                }
+            }
+            jy++;
+            coltop += 3;
+            iac = 2;
+        }
+    }
+}
+for (lastc = 5; lastc + 1 < 7; lastc++) {
+    c_A[lastc] *= -tau[1];
+}
+c_A[4] = 1.0 - tau[1];
+d_i = 1;
+while (d_i <= 1) {
+    c_A[3] = 0.0;
+    d_i = 2;
+}
+c_A[0] = 1.0;
+if (tau[0] != 0.0) {
+    d_i = 3;
+    lastc = 2;
+    while ((d_i > 0) && (c_A[lastc] == 0.0)) {
+        d_i--;
+        lastc--;
+    }
+    lastc = 2;
+    exitg2 = false;
+    while ((!exitg2) && (lastc > 0)) {
+        coltop = (lastc - 1) * 3 + 1;
+        jy = coltop;
+        do {
+            exitg1 = 0;
+            if (jy + 3 <= (coltop + d_i) + 2) {
+                if (c_A[jy + 2] != 0.0) {
+                    exitg1 = 1;
+                } else {
+                    jy++;
+                }
+            } else {
+                lastc--;
+                exitg1 = 2;
+            }
+        } while (exitg1 == 0);
+        if (exitg1 == 1) {
+            exitg2 = true;
+        }
+    }
+} else {
+    d_i = 0;
+    lastc = 0;
+}
+if (d_i > 0) {
+    if (lastc != 0) {
+        for (coltop = 1; coltop <= lastc; coltop++) {
+            work[coltop - 1] = 0.0;
+        }
+        coltop = 0;
+        jy = (lastc - 1) * 3 + 4;
+        for (iac = 4; iac <= jy; iac += 3) {
+            ix = 1;
+            c = 0.0;
+            d = (iac + d_i) - 1;
+            for (b_ia = iac; b_ia <= d; b_ia++) {
+                c += c_A[b_ia - 1] * c_A[ix - 1];
+                ix++;
+            }
+            work[coltop] += c;
+            coltop++;
+        }
+    }
+    if (!(-tau[0] == 0.0)) {
+        coltop = 3;
+        jy = 0;
+        for (iac = 1; iac <= lastc; iac++) {
+            if (work[jy] != 0.0) {
+                c = work[jy] * -tau[0];
+                ix = 1;
+                d = d_i + coltop;
+                for (b_ia = coltop; b_ia + 1 <= d; b_ia++) {
+                    c_A[b_ia] += c_A[ix - 1] * c;
+                    ix++;
+                }
+            }
+            jy++;
+            coltop += 3;
+        }
+    }
+}
+for (lastc = 1; lastc + 1 < 4; lastc++) {
+    c_A[lastc] *= -tau[0];
+}
+c_A[0] = 1.0 - tau[0];
+for (d_i = 0; d_i < 3; d_i++) {
+    Q[3 * d_i] = c_A[3 * d_i];
+    Q[1 + 3 * d_i] = c_A[3 * d_i + 1];
+    Q[2 + 3 * d_i] = c_A[3 * d_i + 2];
+}
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_qr(\
+%assign comma = ""
+%<comma>const real_T b_A[9]\
+%assign comma = ", "
+%<comma>real_T Q[9]\
+%assign comma = ", "
+%<comma>real_T R[9]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 6, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_KWIKfactor_Fcn7(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T Status;
+real_T TL[9];
+real_T QQ[9];
+real_T RR[9];
+int16_T i;
+int16_T f_i;
+int16_T d_k;
+int32_T iC_0;
+int32_T i_0;
+int32_T i_1;
+int32_T exitg1;
+%assign _modelSS = ""
+
+Status = 1.0;
+memset(&RLinv[0], 0, 9U * sizeof(real_T));
+for (i = 1; i <= nA; i++) {
+    RLinv[3 * (i - 1)] = 0.0;
+    RLinv[1 + 3 * (i - 1)] = 0.0;
+    RLinv[2 + 3 * (i - 1)] = 0.0;
+    iC_0 = iC[i - 1];
+    i_0 = i - 1;
+    for (i_1 = 0; i_1 < 3; i_1++) {
+        RLinv[i_1 + 3 * i_0] = 0.0;
+        RLinv[i_1 + 3 * i_0] += b_Ac[iC_0 - 1] * b_Linv[i_1];
+        RLinv[i_1 + 3 * i_0] += b_Linv[i_1 + 3] * b_Ac[iC_0 + 5];
+        RLinv[i_1 + 3 * i_0] += b_Linv[i_1 + 6] * b_Ac[iC_0 + 11];
+    }
+}
+%if SLibCG_FcnCallArgAccessed(0,7,0,0)
+%<SLibCG_AccessArg(0 ,7, 4)>
+%endif
+
+%<(SLibCGCallSubFcn("MPC_qr", ["RLinv", "QQ", "RR"], 0, 7, 0))>;
+i = 1;
+do {
+    exitg1 = 0;
+    if (i <= nA) {
+        if (fabs(RR[((i - 1) * 3 + i) - 1]) < 1.0E-12) {
+            Status = -2.0;
+            exitg1 = 1;
+        } else {
+            i++;
+        }
+    } else {
+        for (i = 1; i <= n; i++) {
+            for (f_i = 1; f_i <= n; f_i++) {
+                TL[(i + 3 * (f_i - 1)) - 1] = (b_Linv[(i - 1) * 3 + 1] * QQ[(f_i - 1) * 3 + 1] + b_Linv[(i - 1) * 3] * QQ[(f_i - 1) * 3]) + b_Linv[(i - 1) * 3 + 2] * QQ[(f_i - 1) * 3 + 2];
+            }
+        }
+        memset(&RLinv[0], 0, 9U * sizeof(real_T));
+        for (i = nA; i > 0; i--) {
+            RLinv[(i + 3 * (i - 1)) - 1] = 1.0;
+            for (f_i = i; f_i <= nA; f_i++) {
+                RLinv[(i + 3 * (f_i - 1)) - 1] /= RR[((i - 1) * 3 + i) - 1];
+            }
+            if (i > 1) {
+                for (f_i = 1; f_i < i; f_i++) {
+                    for (d_k = i; d_k <= nA; d_k++) {
+                        RLinv[(f_i + 3 * (d_k - 1)) - 1] -= RR[((i - 1) * 3 + f_i) - 1] * RLinv[((d_k - 1) * 3 + i) - 1];
+                    }
+                }
+            }
+        }
+        for (i = 1; i <= n; i++) {
+            for (f_i = i; f_i <= n; f_i++) {
+                b_H[(i + 3 * (f_i - 1)) - 1] = 0.0;
+                for (d_k = (int16_T)(nA + 1); d_k <= n; d_k++) {
+                    b_H[(i + 3 * (f_i - 1)) - 1] -= TL[((d_k - 1) * 3 + i) - 1] * TL[((d_k - 1) * 3 + f_i) - 1];
+                }
+                b_H[(f_i + 3 * (i - 1)) - 1] = b_H[((f_i - 1) * 3 + i) - 1];
+            }
+        }
+        for (i = 1; i <= nA; i++) {
+            for (f_i = 1; f_i <= n; f_i++) {
+                D[(f_i + 3 * (i - 1)) - 1] = 0.0;
+                for (d_k = i; d_k <= nA; d_k++) {
+                    D[(f_i + 3 * (i - 1)) - 1] += TL[((d_k - 1) * 3 + f_i) - 1] * RLinv[((d_k - 1) * 3 + i) - 1];
+                }
+            }
+        }
+        exitg1 = 1;
+    }
+} while (exitg1 == 0);
+return Status;
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static real_T MPC_KWIKfactor(\
+%assign comma = ""
+%<comma>const real_T b_Ac[18]\
+%assign comma = ", "
+%<comma>const int16_T iC[6]\
+%assign comma = ", "
+%<comma>int16_T nA\
+%assign comma = ", "
+%<comma>const real_T b_Linv[9]\
+%assign comma = ", "
+%<comma>real_T RLinv[9]\
+%assign comma = ", "
+%<comma>real_T D[9]\
+%assign comma = ", "
+%<comma>real_T b_H[9]\
+%assign comma = ", "
+%<comma>int16_T n\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 7, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_DropConstraint_Fcn8(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+int16_T i;
+int32_T tmp;
+iA[iC[kDrop - 1] - 1] = 0;
+if (kDrop < *nA) {
+    tmp = *nA - 1;
+    if (tmp < -32768) {
+        tmp = -32768;
+    }
+    for (i = kDrop; i <= (int16_T)tmp; i++) {
+        iC[i - 1] = iC[i];
+    }
+}
+iC[*nA - 1] = 0;
+tmp = *nA - 1;
+if (tmp < -32768) {
+    tmp = -32768;
+}
+*nA = (int16_T)tmp;
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_DropConstraint(\
+%assign comma = ""
+%<comma>int16_T kDrop\
+%assign comma = ", "
+%<comma>int16_T iA[6]\
+%assign comma = ", "
+%<comma>int16_T *nA\
+%assign comma = ", "
+%<comma>int16_T iC[6]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 8, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_abs_Fcn9(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+y[0] = fabs(x[0]);
+y[1] = fabs(x[1]);
+y[2] = fabs(x[2]);
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_abs(\
+%assign comma = ""
+%<comma>const real_T x[3]\
+%assign comma = ", "
+%<comma>real_T y[3]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 9, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function MPC_qpkwik_Fcn10(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+real_T r[3];
+real_T rMin;
+real_T RLinv[9];
+real_T D[9];
+real_T b_H[9];
+real_T U[9];
+real_T cTol[6];
+boolean_T cTolComputed;
+int16_T iC[6];
+int16_T nA;
+real_T Opt[6];
+real_T Rhs[6];
+boolean_T DualFeasible;
+boolean_T ColdReset;
+int16_T kDrop;
+real_T Xnorm0;
+real_T cMin;
+int16_T kNext;
+real_T AcRow[3];
+real_T z[3];
+real_T zTa;
+real_T t;
+int16_T iSave;
+uint16_T q;
+uint16_T b_x;
+int32_T ix;
+int32_T i;
+int32_T tmp;
+int32_T exitg1;
+int32_T exitg2;
+int32_T exitg3;
+boolean_T exitg4;
+boolean_T guard1 = false;
+boolean_T guard2 = false;
+%assign _modelSS = ""
+
+*status = 1.0;
+x[0] = 0.0;
+r[0] = 0.0;
+x[1] = 0.0;
+r[1] = 0.0;
+x[2] = 0.0;
+r[2] = 0.0;
+rMin = 0.0;
+cTolComputed = false;
+for (i = 0; i < 6; i++) {
+    lambda[i] = 0.0;
+    cTol[i] = 1.0;
+    iC[i] = 0;
+}
+nA = 0;
+for (kNext = 0; kNext < 6; kNext++) {
+    if (iA[kNext] == 1) {
+        i = nA + 1;
+        if (i > 32767) {
+            i = 32767;
+        }
+        nA = (int16_T)i;
+        iC[(int16_T)i - 1] = (int16_T)(kNext + 1);
+    }
+}
+guard1 = false;
+if (nA > 0) {
+    for (i = 0; i < 6; i++) {
+        Opt[i] = 0.0;
+    }
+    Rhs[0] = f[0];
+    Rhs[3] = 0.0;
+    Rhs[1] = f[1];
+    Rhs[4] = 0.0;
+    Rhs[2] = f[2];
+    Rhs[5] = 0.0;
+    DualFeasible = false;
+    i = 3 * nA;
+    if (i > 32767) {
+        i = 32767;
+    }
+    if ((int16_T)i > 50) {
+        kNext = (int16_T)i;
+    } else {
+        kNext = 50;
+    }
+    q = (uint16_T)(kNext / 10U);
+    b_x = (uint16_T)((uint32_T)kNext - q * 10);
+    if ((b_x > 0) && (b_x >= 5)) {
+        q++;
+    }
+    ColdReset = false;
+    do {
+        exitg3 = 0;
+        if ((!DualFeasible) && (nA > 0) && ((int32_T)*status <= b_maxiter)) {
+%if SLibCG_FcnCallArgAccessed(0,10,0,0)
+%<SLibCG_AccessArg(0 ,10, 3)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,0,3)
+%<SLibCG_AccessArg(0 ,10, 0)>
+%endif
+
+            Xnorm0 = %<(SLibCGCallSubFcn("MPC_KWIKfactor", ["b_Ac", "iC", "nA", "b_Linv", "RLinv", "D", "b_H", "3"], 0, 10, 0))>;
+            if (Xnorm0 < 0.0) {
+                if (ColdReset) {
+                    *status = -2.0;
+                    exitg3 = 2;
+                } else {
+                    nA = 0;
+                    for (i = 0; i < 6; i++) {
+                        iA[i] = 0;
+                        iC[i] = 0;
+                    }
+                    ColdReset = true;
+                }
+            } else {
+                for (kNext = 1; kNext <= nA; kNext++) {
+                    i = 3 + kNext;
+                    if (i > 32767) {
+                        i = 32767;
+                    }
+                    Rhs[i - 1] = b[iC[kNext - 1] - 1];
+                    for (kDrop = kNext; kDrop <= nA; kDrop++) {
+                        U[(kDrop + 3 * (kNext - 1)) - 1] = 0.0;
+                        for (iSave = 1; iSave <= nA; iSave++) {
+                            U[(kDrop + 3 * (kNext - 1)) - 1] += RLinv[((iSave - 1) * 3 + kDrop) - 1] * RLinv[((iSave - 1) * 3 + kNext) - 1];
+                        }
+                        U[(kNext + 3 * (kDrop - 1)) - 1] = U[((kNext - 1) * 3 + kDrop) - 1];
+                    }
+                }
+                for (kNext = 0; kNext < 3; kNext++) {
+                    i = kNext + 1;
+                    Opt[kNext] = (b_H[i - 1] * Rhs[0] + b_H[i + 2] * Rhs[1]) + b_H[i + 5] * Rhs[2];
+                    for (kDrop = 1; kDrop <= nA; kDrop++) {
+                        i = 3 + kDrop;
+                        if (i > 32767) {
+                            i = 32767;
+                        }
+                        Opt[kNext] += D[(kDrop - 1) * 3 + kNext] * Rhs[i - 1];
+                    }
+                }
+                for (kNext = 1; kNext <= nA; kNext++) {
+                    i = 3 + kNext;
+                    if (i > 32767) {
+                        i = 32767;
+                    }
+                    Opt[i - 1] = (D[(kNext - 1) * 3 + 1] * Rhs[1] + D[(kNext - 1) * 3] * Rhs[0]) + D[(kNext - 1) * 3 + 2] * Rhs[2];
+                    for (kDrop = 1; kDrop <= nA; kDrop++) {
+                        i = 3 + kNext;
+                        if (i > 32767) {
+                            i = 32767;
+                        }
+                        ix = 3 + kNext;
+                        if (ix > 32767) {
+                            ix = 32767;
+                        }
+                        tmp = 3 + kDrop;
+                        if (tmp > 32767) {
+                            tmp = 32767;
+                        }
+                        Opt[i - 1] = U[((kDrop - 1) * 3 + kNext) - 1] * Rhs[tmp - 1] + Opt[ix - 1];
+                    }
+                }
+                Xnorm0 = -1.0E-12;
+                kDrop = 0;
+                for (kNext = 1; kNext <= nA; kNext++) {
+                    i = 3 + kNext;
+                    if (i > 32767) {
+                        i = 32767;
+                    }
+                    lambda[iC[kNext - 1] - 1] = Opt[i - 1];
+                    i = 3 + kNext;
+                    if (i > 32767) {
+                        i = 32767;
+                    }
+                    if ((Opt[i - 1] < Xnorm0) && (kNext <= nA)) {
+                        kDrop = kNext;
+                        i = 3 + kNext;
+                        if (i > 32767) {
+                            i = 32767;
+                        }
+                        Xnorm0 = Opt[i - 1];
+                    }
+                }
+                if (kDrop <= 0) {
+                    DualFeasible = true;
+                    x[0] = Opt[0];
+                    x[1] = Opt[1];
+                    x[2] = Opt[2];
+                } else {
+                    (*status)++;
+                    if ((int32_T)*status > q) {
+                        nA = 0;
+                        for (i = 0; i < 6; i++) {
+                            iA[i] = 0;
+                            iC[i] = 0;
+                        }
+                        ColdReset = true;
+                    } else {
+                        lambda[iC[kDrop - 1] - 1] = 0.0;
+%if SLibCG_FcnCallArgAccessed(0,10,1,1)
+%<SLibCG_AccessArg(0 ,10, 5)>
+%endif
+
+                        %<(SLibCGCallSubFcn("MPC_DropConstraint", ["kDrop", "iA", "&nA", "iC"], 0, 10, 1))>;
+                    }
+                }
+            }
+        } else {
+            if (nA <= 0) {
+                for (i = 0; i < 6; i++) {
+                    lambda[i] = 0.0;
+                }
+%if SLibCG_FcnCallArgAccessed(0,10,2,0)
+%<SLibCG_AccessArg(0 ,10, 1)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,2,1)
+%<SLibCG_AccessArg(0 ,10, 2)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,2,2)
+%<SLibCG_AccessArg(0 ,10, 8)>
+%endif
+
+                %<(SLibCGCallSubFcn("MPC_Unconstrained", ["b_Hinv", "f", "x", "3"], 0, 10, 2))>;
+            }
+            exitg3 = 1;
+        }
+    } while (exitg3 == 0);
+    if (exitg3 == 1) {
+        guard1 = true;
+    }
+} else {
+%if SLibCG_FcnCallArgAccessed(0,10,3,0)
+%<SLibCG_AccessArg(0 ,10, 1)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,3,1)
+%<SLibCG_AccessArg(0 ,10, 2)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,3,2)
+%<SLibCG_AccessArg(0 ,10, 8)>
+%endif
+
+    %<(SLibCGCallSubFcn("MPC_Unconstrained", ["b_Hinv", "f", "x", "3"], 0, 10, 3))>;
+    guard1 = true;
+}
+if (guard1) {
+%if SLibCG_FcnCallArgAccessed(0,10,4,0)
+%<SLibCG_AccessArg(0 ,10, 8)>
+%endif
+
+    Xnorm0 = %<(SLibCGCallSubFcn("MPC_norm", ["x"], 0, 10, 4))>;
+    do {
+        exitg2 = 0;
+        if ((int32_T)*status <= b_maxiter) {
+            cMin = -FeasTol;
+            kNext = 0;
+            for (kDrop = 0; kDrop < 6; kDrop++) {
+                if (!cTolComputed) {
+                    i = kDrop + 1;
+                    z[0] = b_Ac[i - 1] * x[0];
+                    z[1] = b_Ac[i + 5] * x[1];
+                    z[2] = b_Ac[i + 11] * x[2];
+                    %<(SLibCGCallSubFcn("MPC_abs", ["z", "AcRow"], 0, 10, 5))>;
+                    i = 1;
+                    zTa = AcRow[0];
+                    if (rtIsNaN(AcRow[0])) {
+                        ix = 2;
+                        exitg4 = false;
+                        while ((!exitg4) && (ix < 4)) {
+                            i = ix;
+                            if (!rtIsNaN(AcRow[ix - 1])) {
+                                zTa = AcRow[ix - 1];
+                                exitg4 = true;
+                            } else {
+                                ix++;
+                            }
+                        }
+                    }
+                    if (i < 3) {
+                        while (i + 1 < 4) {
+                            if (AcRow[i] > zTa) {
+                                zTa = AcRow[i];
+                            }
+                            i++;
+                        }
+                    }
+                    cTol[kDrop] = fmax(cTol[kDrop], zTa);
+                }
+                if (iA[kDrop] == 0) {
+                    i = kDrop + 1;
+                    zTa = (((b_Ac[i - 1] * x[0] + b_Ac[i + 5] * x[1]) + b_Ac[i + 11] * x[2]) - b[kDrop]) / cTol[kDrop];
+                    if (zTa < cMin) {
+                        cMin = zTa;
+                        kNext = (int16_T)(kDrop + 1);
+                    }
+                }
+            }
+            cTolComputed = true;
+            if (kNext <= 0) {
+                exitg2 = 1;
+            } else {
+                do {
+                    exitg1 = 0;
+                    if ((kNext > 0) && ((int32_T)*status <= b_maxiter)) {
+                        guard2 = false;
+                        if (nA == 0) {
+                            for (i = 0; i < 3; i++) {
+                                z[i] = b_Hinv[i + 6] * b_Ac[kNext + 11] + (b_Hinv[i + 3] * b_Ac[kNext + 5] + b_Ac[kNext - 1] * b_Hinv[i]);
+                            }
+                            guard2 = true;
+                        } else {
+%if SLibCG_FcnCallArgAccessed(0,10,6,0)
+%<SLibCG_AccessArg(0 ,10, 3)>
+%endif
+%if SLibCG_FcnCallArgAccessed(0,10,6,3)
+%<SLibCG_AccessArg(0 ,10, 0)>
+%endif
+
+                            cMin = %<(SLibCGCallSubFcn("MPC_KWIKfactor", ["b_Ac", "iC", "nA", "b_Linv", "RLinv", "D", "b_H", "3"], 0, 10, 6))>;
+                            if (cMin <= 0.0) {
+                                *status = -2.0;
+                                exitg1 = 1;
+                            } else {
+                                for (i = 0; i < 3; i++) {
+                                    U[3 * i] = -b_H[3 * i];
+                                    U[1 + 3 * i] = -b_H[3 * i + 1];
+                                    U[2 + 3 * i] = -b_H[3 * i + 2];
+                                }
+                                for (i = 0; i < 3; i++) {
+                                    z[i] = U[i + 6] * b_Ac[kNext + 11] + (U[i + 3] * b_Ac[kNext + 5] + b_Ac[kNext - 1] * U[i]);
+                                }
+                                for (kDrop = 1; kDrop <= nA; kDrop++) {
+                                    r[kDrop - 1] = (D[(kDrop - 1) * 3 + 1] * b_Ac[kNext + 5] + D[(kDrop - 1) * 3] * b_Ac[kNext - 1]) + D[(kDrop - 1) * 3 + 2] * b_Ac[kNext + 11];
+                                }
+                                guard2 = true;
+                            }
+                        }
+                        if (guard2) {
+                            kDrop = 0;
+                            cMin = 0.0;
+                            DualFeasible = true;
+                            ColdReset = true;
+                            if (nA > 0) {
+                                iSave = 1;
+                                exitg4 = false;
+                                while ((!exitg4) && (iSave <= nA)) {
+                                    if (r[iSave - 1] >= 1.0E-12) {
+                                        ColdReset = false;
+                                        exitg4 = true;
+                                    } else {
+                                        iSave++;
+                                    }
+                                }
+                            }
+                            if (!((nA == 0) || ColdReset)) {
+                                for (iSave = 1; iSave <= nA; iSave++) {
+                                    if (r[iSave - 1] > 1.0E-12) {
+                                        zTa = lambda[iC[iSave - 1] - 1] / r[iSave - 1];
+                                        if ((kDrop == 0) || (zTa < rMin)) {
+                                            rMin = zTa;
+                                            kDrop = iSave;
+                                        }
+                                    }
+                                }
+                                if (kDrop > 0) {
+                                    cMin = rMin;
+                                    DualFeasible = false;
+                                }
+                            }
+                            zTa = (b_Ac[kNext - 1] * z[0] + b_Ac[kNext + 5] * z[1]) + b_Ac[kNext + 11] * z[2];
+                            if (zTa <= 0.0) {
+                                zTa = 0.0;
+                                ColdReset = true;
+                            } else {
+                                zTa = (b[kNext - 1] - ((b_Ac[kNext - 1] * x[0] + b_Ac[kNext + 5] * x[1]) + b_Ac[kNext + 11] * x[2])) / zTa;
+                                ColdReset = false;
+                            }
+                            if (DualFeasible && ColdReset) {
+                                *status = -1.0;
+                                exitg1 = 1;
+                            } else {
+                                if (ColdReset) {
+                                    t = cMin;
+                                } else if (DualFeasible) {
+                                    t = zTa;
+                                } else {
+                                    t = fmin(cMin, zTa);
+                                }
+                                for (iSave = 1; iSave <= nA; iSave++) {
+                                    lambda[iC[iSave - 1] - 1] -= r[iSave - 1] * t;
+                                    if ((iC[iSave - 1] <= 6) && (lambda[iC[iSave - 1] - 1] < 0.0)) {
+                                        lambda[iC[iSave - 1] - 1] = 0.0;
+                                    }
+                                }
+                                lambda[kNext - 1] += t;
+                                if (t == cMin) {
+%if SLibCG_FcnCallArgAccessed(0,10,7,1)
+%<SLibCG_AccessArg(0 ,10, 5)>
+%endif
+
+                                    %<(SLibCGCallSubFcn("MPC_DropConstraint", ["kDrop", "iA", "&nA", "iC"], 0, 10, 7))>;
+                                }
+                                if (!ColdReset) {
+                                    x[0] += t * z[0];
+                                    x[1] += t * z[1];
+                                    x[2] += t * z[2];
+                                    if (t == zTa) {
+                                        if (nA == 3) {
+                                            *status = -1.0;
+                                            exitg1 = 1;
+                                        } else {
+                                            i = nA + 1;
+                                            if (i > 32767) {
+                                                i = 32767;
+                                            }
+                                            nA = (int16_T)i;
+                                            iC[(int16_T)i - 1] = kNext;
+                                            kDrop = (int16_T)i;
+                                            while ((kDrop > 1) && (!(iC[kDrop - 1] > iC[kDrop - 2]))) {
+                                                iSave = iC[kDrop - 1];
+                                                iC[kDrop - 1] = iC[kDrop - 2];
+                                                iC[kDrop - 2] = iSave;
+                                                kDrop--;
+                                            }
+                                            iA[kNext - 1] = 1;
+                                            kNext = 0;
+                                            (*status)++;
+                                        }
+                                    } else {
+                                        (*status)++;
+                                    }
+                                } else {
+                                    (*status)++;
+                                }
+                            }
+                        }
+                    } else {
+%if SLibCG_FcnCallArgAccessed(0,10,8,0)
+%<SLibCG_AccessArg(0 ,10, 8)>
+%endif
+
+                        cMin = %<(SLibCGCallSubFcn("MPC_norm", ["x"], 0, 10, 8))>;
+                        if (fabs(cMin - Xnorm0) > 0.001) {
+                            Xnorm0 = cMin;
+%if SLibCG_FcnCallArgAccessed(0,10,9,0)
+%<SLibCG_AccessArg(0 ,10, 4)>
+%endif
+
+                            %<(SLibCGCallSubFcn("MPC_abs_h", ["b", "Opt"], 0, 10, 9))>;
+                            for (i = 0; i < 6; i++) {
+                                cTol[i] = fmax(Opt[i], 1.0);
+                            }
+                            cTolComputed = false;
+                        }
+                        exitg1 = 2;
+                    }
+                } while (exitg1 == 0);
+                if (exitg1 == 1) {
+                    exitg2 = 1;
+                }
+            }
+        } else {
+            *status = 0.0;
+            exitg2 = 1;
+        }
+    } while (exitg2 == 0);
+}
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void MPC_qpkwik(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(0, 10, 0)
+%<comma>const real_T b_Linv[9]\
+%assign comma = ", "
+%endif
+%<comma>const real_T b_Hinv[9]\
+%assign comma = ", "
+%<comma>const real_T f[3]\
+%assign comma = ", "
+%<comma>const real_T b_Ac[18]\
+%assign comma = ", "
+%<comma>const real_T b[6]\
+%assign comma = ", "
+%<comma>int16_T iA[6]\
+%assign comma = ", "
+%<comma>int16_T b_maxiter\
+%assign comma = ", "
+%<comma>real_T FeasTol\
+%assign comma = ", "
+%<comma>real_T x[3]\
+%assign comma = ", "
+%<comma>real_T lambda[6]\
+%assign comma = ", "
+%<comma>real_T *status\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 10, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
