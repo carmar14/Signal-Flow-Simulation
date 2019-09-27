@@ -180,4 +180,4 @@ load('DMC_matrices2');
 load('modeloElectrico');
 load('modeloDiesel_dotros')
 
-
+clc
