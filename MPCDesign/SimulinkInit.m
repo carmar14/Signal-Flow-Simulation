@@ -367,15 +367,15 @@ run('truetime-2.0\init_truetime');
 R1=0.1;
 L1=40e-3;
 C1=22e-6;
-R4=5;%10;
-L4=315e-3;%1e-3;
+R4=0.005;%10;
+L4=35e-6;%1e-3;
 
 %REN
 R2=0.2;
 L2=30e-3;
 C2=22e-6;
-R5=12;%40;  
-L5=220e-3;%10e-3;
+R5=0.0012;%40;  
+L5=22e-6;%10e-3;
 
 %DIESEL
 R3=1e-3;
@@ -389,3 +389,16 @@ RL=10;
 R=10;
 L=5.2;
 Cl=20000e-6;
+
+
+D=zeros(2,2);
+% sis=ss(A,B,C,D);
+
+% load('mpc_linea_transmision.mat')
+% CSTR = ss1;%ss(Ab,Bb,Cb,Db);
+% CSTR.InputName = {'Pin_bio', 'Qin_bio','Pin_gen', 'Qin_gen'}; %u=[Pi_bio.Data Qi_bio.Data Pi_diesel.Data Qi_diesel.Data];
+% CSTR.OutputName = {'Pout_bio', 'Qout_bio','Pout_gen', 'Qout_gen'}; %y=[Po_bio.Data Qo_bio.Data Po_diesel.Data Qo_diesel.Data];
+% Ts = 1e-1;
+% p = 100;
+% m = 100;
+% mpcobj = mpc(CSTR, Ts, p, m);

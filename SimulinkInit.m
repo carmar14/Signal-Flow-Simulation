@@ -114,7 +114,7 @@ plant=CSTR;
 Ts = 1e-1;
 p = 100;
 m = 100;
-% mpcobj = mpc(plant, Ts, p, m);
+mpcobj = mpc(plant, Ts, p, m);
 
 % Specify actuator saturation limits as MV constraints.
 % mpcobj.MV = struct('Min',{-200;-200},'Max',{200;200},'RateMin',{-100;-100});
