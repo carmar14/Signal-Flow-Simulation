@@ -163,6 +163,34 @@ S_b=4.51;
 S_v=0.63;
 X_meth=0.35;
 
+% Matrices del sistema desde el inversor hacia la carga sin el controlador
+% A=[-R1/L1 zeros(1,6) -1/L1 zeros(1,3);
+%     0 -R2/L2 zeros(1,6) -1/L2 0 0;
+%     zeros(1,2) -R3/L3 zeros(1,6) -1/L3 0;
+%     zeros(1,3) -R4/L4 zeros(1,3) 1/L4 0 0 -1/L4;
+%     zeros(1,4) -R5/L5 zeros(1,3) 1/L5 0 -1/L5;
+%     zeros(1,5) -R6/L6 zeros(1,3) 1/L6 -1/L6;
+%     zeros(1,6) -R/L zeros(1,3) 1/L;
+%     1/C1 zeros(1,2) -1/C1 zeros(1,7);
+%     0 1/C2 0 0 -1/C2 zeros(1,6);
+%     0 0 1/C3 0 0 -1/C3 zeros(1,5);
+%     zeros(1,3) 1/Cl 1/Cl 1/Cl -1/Cl zeros(1,3) -1/(Cl*RL)]; 
+% B=[1/L1 0 0;
+%    0 1/L2 0;
+%    0 0 1/L3;
+%    zeros(8,3)];
+% C11=[zeros(1,3) 1 zeros(1,7)]; %Salida del BIO
+% C22=[zeros(1,4) 1 zeros(1,6)]; %Salida del gene
+% C33=[zeros(1,5) 1 zeros(1,5)]; %Salida del Diesel
+% C44=[zeros(1,10) 1];
+% C=[C11; C22; C33;C44];
+% D=zeros(4,3);
+% D1=zeros(1,3);
+% D3=zeros(1,3);
+% D2=zeros(1,3);
+% 
+% sis=ss(A,B,C,D);
+
 clc
 
 
