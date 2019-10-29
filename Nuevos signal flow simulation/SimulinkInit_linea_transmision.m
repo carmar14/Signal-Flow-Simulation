@@ -32,13 +32,13 @@ H_E_d = c2d(H_E,0.01,'tustin')
 
 % Create the controller object with sampling period, prediction and control horizons:
 load('mpc_linea_transmision.mat')
-CSTR = ss1;%ss(Ab,Bb,Cb,Db);
-CSTR.InputName = {'Pin_bio', 'Qin_bio','Pin_gen', 'Qin_gen'}; %u=[Pi_bio.Data Qi_bio.Data Pi_diesel.Data Qi_diesel.Data];
-CSTR.OutputName = {'Pout_bio', 'Qout_bio','Pout_gen', 'Qout_gen'}; %y=[Po_bio.Data Qo_bio.Data Po_diesel.Data Qo_diesel.Data];
-Ts = 1e-1;
-p = 100;
-m = 100;
-mpcobj = mpc(CSTR, Ts, p, m);
+% CSTR = ss1;%ss(Ab,Bb,Cb,Db);
+% CSTR.InputName = {'Pin_bio', 'Qin_bio','Pin_gen', 'Qin_gen'}; %u=[Pi_bio.Data Qi_bio.Data Pi_diesel.Data Qi_diesel.Data];
+% CSTR.OutputName = {'Pout_bio', 'Qout_bio','Pout_gen', 'Qout_gen'}; %y=[Po_bio.Data Qo_bio.Data Po_diesel.Data Qo_diesel.Data];
+% Ts = 1e-1;
+% p = 100;
+% m = 100;
+% mpcobj = mpc(CSTR, Ts, p, m);
 
 % Specify actuator saturation limits as MV constraints.
 % mpcobj.MV = struct('Min',{-200;-200},'Max',{200;200},'RateMin',{-100;-100});
