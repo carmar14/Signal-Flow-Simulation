@@ -113,7 +113,7 @@ L6=10e-6;
 RL=10;
 R=10;
 L=5.2;
-Cl=20000e-6;
+Cl=20000e-6;%20000e-6;
 
 % Matrices desde el inversor hacia la carga sin el controlador
 ssAl=[-R1/L1 zeros(1,6) -1/L1 zeros(1,3);
@@ -191,7 +191,7 @@ X_meth=0.35;
 %Matrices para el diseño del observador de Luenberger
 % sys=ss(ssAl,ssBl,ssCl,[]);
 sys=ss(ssAl,ssBl,ssCl,D);
-tm=1e-5;%1e-4
+tm=1e-5;%1e-4  del controlador pr 0.0001
 sysd=c2d(sys,tm);
 Ad=sysd.A;
 Bd=sysd.B;
