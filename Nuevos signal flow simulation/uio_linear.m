@@ -71,9 +71,9 @@ end
 if o==1
     [ABAR,BBAR,CBAR,TOM,KnO] = obsvf(A1,B,C); % If it is necessary
     P = TOM; % similarity transformation 
-    Ao = ABAR(5,5);
-    Cstar = CBAR(1,5);
-    pd = 0.001;%0.001;
+    Ao = ABAR(11,11);
+    Cstar = CBAR(1,11);
+    pd = 0.0001;%0.001;
     Kpsp2 = (Ao - pd)/Cstar;
 %     K1 = inv(P)*[1 1 1 1 Kpsp2]';
     K1 = inv(P)*[1 1 1 1 1 1 1 1 1 1 Kpsp2]';
