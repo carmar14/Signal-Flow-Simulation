@@ -1,3 +1,5 @@
+// compile with: "gcc ert_main.c diesel.c rt_nonfinite.c rtGetInf.c rtGetNaN.c libmcp3204.c  -lm -lwiringPi -lrt -Wall"
+
 /*
  * File: ert_main.c
  *
@@ -17,6 +19,16 @@
 #include <stdio.h>                     /* This ert_main.c example uses printf/fflush */
 #include "diesel.h"                    /* Model's header file */
 #include "rtwtypes.h"
+#include <wiringSerial.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <termios.h>
+#include <wiringPi.h>
+#include <stdint.h>
+//#include <ncurses.h>
+#include "libmcp3204.h"
 
 /*
  * Associating rt_OneStep with a real-time clock or interrupt service routine
@@ -29,6 +41,105 @@
  * your application needs.  This example simply sets an error status in the
  * real-time model and returns from rt_OneStep.
  */
+
+//Variables creadas por el programador
+//------Entradas-------
+double Pref_d=0.0;
+double Qref_d=0.0;
+double Vload=0.0;
+double par=0.0;
+double flujo=0.0;
+MCP3204 ad_MCP3204;
+int fileDescriptor;
+char error[55];
+
+//------Salidas--------
+double Idie=0.0;
+double caudal=0.0;
+double vdc=0.0;
+double min=5000;
+double max=0.0;
+double duty_cycle=0.0;
+double potencia=0.0;
+
+#define MSGISIZE 9
+
+//Comunicacion
+int  bytes_read = 0;
+int pinr=0;
+int var=0;
+char bufferAux;
+char read_buffer[MSGISIZE];   /* Buffer to store the data received              */
+int var1=0;
+int var2=0;
+int var3=0;
+char var1s[7];
+char var2s[7];
+char var3s[7];
+int fd;
+
+int i2a=0;
+int caudala=0;
+char buffer[8];
+char buffer2[8];
+double tiempo=0.0;
+
+//===============================================================
+//-------Variables para graficar
+#include <math.h>
+#define NUM_POINTS 100000
+char * commandsForGnuplot[] = {"set title \"TITLEEEEE\"", "plot 'data.temp'"};
+double xvals[NUM_POINTS];//= {1.0, 2.0, 3.0, 4.0, 5.0};
+double yvals[NUM_POINTS];// = {5.0 ,3.0, 1.0, 3.0, 5.0};
+FILE * temp;
+FILE *	gnuplotPipe;
+double in=0;
+//===============================================================
+
+//===================  Para Pipes =========================
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#define OUR_INPUT_FIFO_NAME "/tmp/dataD"
+
+int our_input_fifo_filestream = -1;
+int result;
+char bufferPipe[128];
+//=========================================================
+
+//--------------Para RT-----------------
+#include <time.h>
+#include <sched.h>
+//#include <wiringPi.h>
+
+#define NSEC_PER_SEC    1000000000
+
+//--------------------------------------
+
+//----------------------------Para RT------------------------------
+/* using clock_nanosleep of librt */
+extern int clock_nanosleep(clockid_t __clock_id, int __flags,
+        __const struct timespec *__req,
+        struct timespec *__rem);
+
+/* the struct timespec consists of nanoseconds
+ * and seconds. if the nanoseconds are getting
+ * bigger than 1000000000 (= 1 second) the
+ * variable containing seconds has to be
+ * incremented and the nanoseconds decremented
+ * by 1000000000.
+ */
+static inline void tsnorm(struct timespec *ts)
+{
+    while (ts->tv_nsec >= NSEC_PER_SEC) {
+        ts->tv_nsec -= NSEC_PER_SEC;
+        ts->tv_sec++;
+    }
+}
+//------------------------------------------------------------------
+
+
 void rt_OneStep(void);
 void rt_OneStep(void)
 {
