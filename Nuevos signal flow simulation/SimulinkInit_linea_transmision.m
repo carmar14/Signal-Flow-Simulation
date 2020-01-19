@@ -7,17 +7,6 @@ clear
 close all
 clc
 
-% se cargan las matrices dinamicas del MPC DMC.
-load('DMC_matrices');
-% load('FitData')
-
-% se carga la libreria de true time.
-%run('truetime-2.0\init_truetime');
-
-
-%  Parámetros Motor Diesel
-
-
 K1d=1.15; K2d=1; K3d=1; Tao1d=0.5; Tao2d=0.125; Jd=0.3; Pd=0.1;
 
 H_AM = tf([K1d*(K2d*K3d)],[Tao2d 1],'IODelay', Tao1d); % Dinámica Actuador - Motor
@@ -124,9 +113,6 @@ L6=10e-6;
 RL=10;
 R=10;
 L=5.2;
-
-Cl=20000e-6;
-
 Cl=20000e-6;%20000e-6;
 
 % Matrices desde el inversor hacia la carga sin el controlador
@@ -152,24 +138,11 @@ C44=[zeros(1,10) 1];
 ssCl=[C11; C22; C33;C44];
 D=zeros(4,3);
 
-
 %Tabla 1
 cvsi=200/sqrt(2);
 carga=cvsi*20;
 q=0:0.001:carga*1.2;
 soc=100-100*q/carga;
-
-
-
-% se cargan las matrices dinamicas del MPC DMC.
-load('DMC_matrices2');
-
-% se carga la libreria de true time.
-%run('truetime-2.0\init_truetime');
-
-% load('modeloElectrico');
-load('modeloDiesel_dotros')
-
 
 %Parámetros del sistema BIOMASA
 factor_t=24*3600;
@@ -189,19 +162,11 @@ wref=70000;%70000;
 K=25;
 K11=0.8;
 K22=0.2;
-
-T1=0.4;
-T2=1;
-T3=15;
-T4=2.5;
-T5=3.3;
-
 T1s=0.4;
 T2s=1;
 T3s=15;
 T4s=2.5;
 T5s=3.3;
-
 Tt=450;
 Kv=1;
 Tv=0.05;
@@ -220,7 +185,6 @@ X_acid=1.2;
 S_b=4.51;
 S_v=0.63;
 X_meth=0.35;
-
 
 
 %%=============Observadores para la deteccion y el aislamiento
@@ -339,7 +303,6 @@ C12o=Cd(3,:);
 % D2=zeros(1,3);
 % 
 % sis=ss(A,B,C,D);
-
 
 clc
 
