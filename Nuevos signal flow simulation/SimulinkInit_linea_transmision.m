@@ -40,8 +40,8 @@ CSTR = ss1;%ss(Ab,Bb,Cb,Db);
 CSTR.InputName = {'Pin_bio', 'Qin_bio','Pin_gen', 'Qin_gen'}; %u=[Pi_bio.Data Qi_bio.Data Pi_diesel.Data Qi_diesel.Data];
 CSTR.OutputName = {'Pout_bio', 'Qout_bio','Pout_gen', 'Qout_gen'}; %y=[Po_bio.Data Qo_bio.Data Po_diesel.Data Qo_diesel.Data];
 Ts = 1e-1;
-p = 100;
-m = 100;
+p = 10; %100
+m = 10; %100
 mpcobj = mpc(CSTR, Ts, p, m);
 
 % Specify actuator saturation limits as MV constraints.
