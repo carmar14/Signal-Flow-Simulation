@@ -628,7 +628,7 @@ C12o=Cd(3,:);
 % sis=ss(A,B,C,D);
 
 
-ataque=0;
+ataque=1;
 clc
 
 
