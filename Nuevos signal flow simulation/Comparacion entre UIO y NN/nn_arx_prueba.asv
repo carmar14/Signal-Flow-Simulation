@@ -13,7 +13,7 @@ yo3=y3;
 yo4=y4;
 
 %Modelos de redes neuronales para cada salida [y1 y2 y3 y4]'
-i=1; %i=1 NN con varias salidas i~=1 NN con salida única
+i=2; %i=1 NN con varias salidas i~=1 NN con salida única
 if i==1
     load('nnwy1.mat');
     net1=net;
@@ -112,7 +112,9 @@ if i==1
     
     
     % [yupper,ylower] = envelope(y1,1500);
-    % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+%     [yupper,ylower] = envelope(1.5*y1,800,'rms');
+%     figure
+%     plot(
     %
     
     dyn1=abs(diff(yn1-y1'));
@@ -320,7 +322,13 @@ else
     
     
     % [yupper,ylower] = envelope(y1,1500);
-    % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    figure
+    plot(t1,y1,t1,ylower,t1,yupper)
+    [yupper,ylower] = envelope(y1,800,'rms');
+    figure
+    plot(t1,y1,t1,ylower,t1,yupper)
+    figure
     %
     
     dyn1=abs(diff(yn1-y1'));
@@ -443,6 +451,13 @@ else
     
     % [yupper,ylower] = envelope(y1,1500);
     % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    figure
+    plot(t1,y1,t1,ylower,t1,yupper)
+    [yupper,ylower] = envelope(y1,800,'rms');
+    figure
+    plot(t1,y1,t1,ylower,t1,yupper)
+    figure
     %
     
     dynn1=abs(diff(yn1-y1'));

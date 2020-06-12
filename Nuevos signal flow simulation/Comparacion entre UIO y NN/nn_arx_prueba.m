@@ -13,7 +13,7 @@ yo3=y3;
 yo4=y4;
 
 %Modelos de redes neuronales para cada salida [y1 y2 y3 y4]'
-i=1; %i=1 NN con varias salidas i~=1 NN con salida única
+i=2; %i=1 NN con varias salidas i~=1 NN con salida única
 if i==1
     load('nnwy1.mat');
     net1=net;
@@ -112,7 +112,9 @@ if i==1
     
     
     % [yupper,ylower] = envelope(y1,1500);
-    % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+%     [yupper,ylower] = envelope(1.5*y1,800,'rms');
+%     figure
+%     plot(
     %
     
     dyn1=abs(diff(yn1-y1'));
@@ -320,7 +322,7 @@ else
     
     
     % [yupper,ylower] = envelope(y1,1500);
-    % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    
     %
     
     dyn1=abs(diff(yn1-y1'));
@@ -332,19 +334,27 @@ else
     dy2=abs(diff(yo2));
     dy3=abs(diff(yo3));
     dy4=abs(diff(yo4));
+    
+    [yupper,ylower] = envelope(dy1,300,'rms');%(1.5*dy1,800,'rms');
+    figure
+    plot(t1,dy1(1:end-10,1),t1,ylower(1:end-10,1),t1,yupper(1:end-10,1))
+    [yupper,ylower] = envelope(dy1,800,'rms');
+    figure
+    plot(t1,dy1(1:end-10,1),t1,ylower(1:end-10,1),t1,yupper(1:end-10,1))
+%     figure
     % dy1=dy1
     
-    plot(t1(1:end-1),dyn1,'-k')
-    hold on
-    plot(t(1:end-1),dy1,'--r')
-    ylim([0 2])
-    legend('Der. Residual de red','residual del observador')
-    figure
-    plot(t2(1:end-1),dyn2,'-k')
-    hold on
-    plot(t(1:end-1),dy2,'--r')
-    legend('Der. Residual de red','residual del observador')
-    ylim([0 2])
+%     plot(t1(1:end-1),dyn1,'-k')
+%     hold on
+%     plot(t(1:end-1),dy1,'--r')
+%     ylim([0 2])
+%     legend('Der. Residual de red','residual del observador')
+%     figure
+%     plot(t2(1:end-1),dyn2,'-k')
+%     hold on
+%     plot(t(1:end-1),dy2,'--r')
+%     legend('Der. Residual de red','residual del observador')
+%     ylim([0 2])
     
     % figure
     % plot(t1,yn1-y1','-k')
@@ -443,6 +453,7 @@ else
     
     % [yupper,ylower] = envelope(y1,1500);
     % [yupper,ylower] = envelope(1.5*y1,800,'rms');
+    
     %
     
     dynn1=abs(diff(yn1-y1'));
@@ -455,19 +466,28 @@ else
     dy3=abs(diff(yo3));
     dy4=abs(diff(yo4));
     
+    [yupper,ylower] = envelope(1.5*dy1,800,'rms');
+    figure
+    t1=t1';
+    plot(t1,dy1(1:end-10,1),t1,ylower(1:end-10,1),t1,yupper(1:end-10,1))
+    [yupper,ylower] = envelope(dy1,800,'rms');
+    figure
+    plot(t1,dy1(1:end-10,1),t1,ylower(1:end-10,1),t1,yupper(1:end-10,1))
+%     figure
+    
     % dy1=dy1
-    figure
-    plot(t1(1:end-1),dynn1,'-k')
-    hold on
-    plot(t(1:end-1),dy1,'--r')
-    legend('Der. Residual de red','residual del observador')
-    ylim([0 2])
-    figure
-    plot(t2(1:end-1),dynn2,'-k')
-    hold on
-    plot(t(1:end-1),dy2,'--r')
-    ylim([0 2])
-    legend('Der. Residual de red','residual del observador')
+%     figure
+%     plot(t1(1:end-1),dynn1,'-k')
+%     hold on
+%     plot(t(1:end-1),dy1,'--r')
+%     legend('Der. Residual de red','residual del observador')
+%     ylim([0 2])
+%     figure
+%     plot(t2(1:end-1),dynn2,'-k')
+%     hold on
+%     plot(t(1:end-1),dy2,'--r')
+%     ylim([0 2])
+%     legend('Der. Residual de red','residual del observador')
     
 end
 

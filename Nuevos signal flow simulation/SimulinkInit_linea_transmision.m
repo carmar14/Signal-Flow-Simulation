@@ -632,13 +632,43 @@ ataque=0;
 clc
 
 %umbral adaptativo
+%Sistema Lead-Lag
 polos=eig(ssAl);
 polo_dom=max(real(polos));
-tao1=-1/polo_dom;
+tao1=(-1/polo_dom)/4;
+tao1=0.002;
 tao2=tao1;
-taod=1;
+taod=tao1;
 
+bode(tf([taod 0],[tao1 1 0])*tf(1,[tao2 1]))
+hold on
+bode(tf([taod 0],[tao1 1])*tf(1,[tao2 1]))
+%%Ajuste de constante
+%UIO1
+c11=0.04;
+c12=0.04;
+c13=1.7;
+c14=0.17;
 
+%UIO2
+c21=0.04;
+c22=0.04;
+c23=1.7;
+c24=0.17;
+
+%UIO1
+c31=8e-3;
+c32=0.012;
+c33=2.6;
+c34=0.24;
+
+%UIO4
+c41=0.04;
+c42=0.04;
+c43=1.7;
+c44=0.3;
+
+% 
 %%%Funciones de transferencia
 %  h=tf([RL*L RL*R],[Cl*RL*L  (R*RL*Cl+L) RL+R]);
 % h2=tf(1,conv([L1 R1],[C1*L4 R4*C1 1])+[0 0 L4 R4]);
