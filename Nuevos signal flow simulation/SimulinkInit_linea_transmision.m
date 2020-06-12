@@ -628,8 +628,15 @@ C12o=Cd(3,:);
 % sis=ss(A,B,C,D);
 
 
-ataque=1;
+ataque=0;
 clc
+
+%umbral adaptativo
+polos=eig(ssAl);
+polo_dom=max(real(polos));
+tao1=-1/polo_dom;
+tao2=tao1;
+taod=1;
 
 
 %%%Funciones de transferencia
