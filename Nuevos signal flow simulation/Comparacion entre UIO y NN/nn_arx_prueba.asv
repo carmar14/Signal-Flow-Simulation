@@ -340,8 +340,7 @@ else
     figure
     plot(t1,dy1(1:end-10,1),'k',t(1:1:end-1),abs(ys),'r')
     figure
-    diferencia=dy1-ys;
-    plot(t(1:1:end-1),diferencia)
+    plot()
     figure
     plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
     [yupper,ylower] = envelope(0.9*dy1);%(dy1,800,'rms');
