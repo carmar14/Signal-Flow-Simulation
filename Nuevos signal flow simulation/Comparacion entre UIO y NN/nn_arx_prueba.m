@@ -111,37 +111,135 @@ if i==1
     t4=0:tm:length(yn4)*tm-tm;
     
     
-    % [yupper,ylower] = envelope(y1,1500);
-    %     [yupper,ylower] = envelope(1.5*y1,800,'rms');
-    %     figure
-    %     plot(
-    %
+    ynn1=(yn2+yn3+yn4-3*y_ma(12:end,:))/3;
+    ynn2=(yn1+yn3+yn4-3*y_ma(12:end,:))/3;
+    ynn3=(yn2+yn1+yn4-3*y_ma(12:end,:))/3;
+    ynn4=(yn2+yn3+yn1-3*y_ma(12:end,:))/3;
+      
     
-    dyn1=abs(diff(yn1-y1'));
-    dyn2=abs(diff(yn2-y2'));
-    dyn3=abs(diff(yn3-y3'));
-    dyn4=abs(diff(yn4-y4'));
+    dy1=abs(diff(ynn1(:,1)'));
+    dy2=abs(diff(ynn2(:,2)''));
+    dy3=abs(diff(ynn3(:,3)'));
+    dy4=abs(diff(ynn4(:,4)'));
     
-    dy1=abs(diff(yo1));
-    dy2=abs(diff(yo2));
-    dy3=abs(diff(yo3));
-    dy4=abs(diff(yo4));
-    % dy1=dy1
+    %Umbral con lag & lead
+    tao1=0.0000002;%0.002;
+    tao2=tao1;
+    taod=1;%tao1;
+    sis1=tf([taod 0],[tao1 1 0]);
+    sis2=tf(1,[tao2 1]);
+    [sal tn]=lsim(sis1,dy1,t1(1:1:end-1));
+    [u1 tn1]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy2,t2(1:1:end-1));
+    [u2 tn2]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy3,t3(1:1:end-1));
+    [u3 tn3]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy4,t4(1:1:end-1));
+    [u4 tn4]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
     
-    plot(t1(1:end-1),dyn1,'-k')
-    hold on
-    plot(t(1:end-1),dy1,'--r')
-    ylim([0 2])
-    legend('Der. Residual de red','residual del observador')
+    %Umbrales y derivadas de los sensores aislados
     figure
-    plot(t2(1:end-1),dyn2,'-k')
-    hold on
-    plot(t(1:end-1),dy2,'--r')
-    legend('Der. Residual de red','residual del observador')
-    ylim([0 2])
+    plot(tn1,u1,'k',tn,dy1,'r')
+    figure
+    plot(tn2,u2,'k',tn,dy2,'r')
+    figure
+    plot(tn3,u3,'k',tn,dy3,'r')
+    figure
+    plot(tn4,u4,'k',tn,dy4,'r')
+    
+    [m n]=size(u1);
+    
+    a1=zeros(m,n);
+    a2=a1;
+    a3=a1;
+    a4=a1;
+    b1=0;
+    b2=0;
+    b3=0;
+    b4=0;
+    c1=0;
+    c2=0;
+    c3=0;
+    c4=0;
+    for i=1:m
+        
+        if i>60  %tiempo inicial a quitar t(i)
+            
+            if (dy1(i)>u1(i) || b1==1) && c1<2 %dy1(i)>u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy1(i)>u1(i)
+                    c1=c1+1;
+                end
+                a1(i)=1;
+                b1=1;
+                                                   
+            else
+                a1(i)=0;
+                b1=0;
+                c1=0;
+            end
+            
+            if (dy2(i)>u2(i)|| b2==1) && c2<2% dy1(i)<u1(i) && dy2(i)>u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy2(i)>u2(i)
+                    c2=c2+1;
+                end
+                a2(i)=1;
+                b2=1;
+                                                   
+            else
+                a2(i)=0;
+                b2=0;
+                c2=0;
+            end
+            
+            if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
+                 if dy3(i)>u3(i)
+                    c3=c3+1;
+                end
+                a3(i)=1;
+                b3=1;
+                                                   
+            else
+                a3(i)=0;
+                b3=0;
+                c3=0;
+            end
+            
+            if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
+                 if dy4(i)>u4(i)
+                    c4=c4+1;
+                end
+                a4(i)=1;
+                b4=1;
+                                                   
+            else
+                a4(i)=0;
+                b4=0;
+                c4=0;
+            end
+        end
+        
+       
+    end
+    
+    %Graficas de alarmas
+    figure
+    subplot(2,2,1)
+    plot(tn1,a1,'LineWidth',1);
+    title('Alarma del sensor 1')
+    subplot(2,2,2)
+    plot(tn2,a2,'LineWidth',1);
+    title('Alarma del sensor 2')
+    subplot(2,2,3)
+    plot(tn3,a3,'LineWidth',1);
+    title('Alarma del sensor 3')
+    subplot(2,2,4)
+    plot(tn4,a4,'LineWidth',1);
+    title('Alarma del sensor 4')
+    
+    
     
     %Datos de entrada y salida
-    load('datos_ataque_multiple.mat');
+    load('datos_ataque_multiple_2.mat');
     
     
     yo1=y1;
@@ -220,35 +318,127 @@ if i==1
     yn4=net4(phi4);
     yn4=yn4';
     t4=0:tm:length(yn4)*tm-tm;
+       
+    dy1=abs(diff(yn1(:,1)'));
+    dy2=abs(diff(yn2(:,2)'));
+    dy3=abs(diff(yn3(:,3)'));
+    dy4=abs(diff(yn4(:,4)'));
     
+    %Umbral con lag & lead
+    tao1=0.0000002;%0.002;
+    tao2=tao1;
+    taod=1;%tao1;
+    sis1=tf([taod 0],[tao1 1 0]);
+    sis2=tf(1,[tao2 1]);
+    [sal tn]=lsim(sis1,dy1,t1(1:1:end-1));
+    [u1 tn1]=lsim(sis2,abs(sal)+(4/3)*0.4,tn);
+    [sal tn]=lsim(sis1,dy2,t2(1:1:end-1));
+    [u2 tn2]=lsim(sis2,abs(sal)+(4/3)*1.5,tn);
+    [sal tn]=lsim(sis1,dy3,t3(1:1:end-1));
+    [u3 tn3]=lsim(sis2,abs(sal)+(4/3)*10,tn);
+    [sal tn]=lsim(sis1,dy4,t4(1:1:end-1));
+    [u4 tn4]=lsim(sis2,abs(sal)+(4/3)*1.5,tn);
     
-    % [yupper,ylower] = envelope(y1,1500);
-    % [yupper,ylower] = envelope(1.5*y1,800,'rms');
-    %
+    %Umbrales y derivadas de los sensores aislados
+%     figure
+%     plot(tn1,u1,'k',tn,dy1,'r')
+%     figure
+%     plot(tn2,u2,'k',tn,dy2,'r')
+%     figure
+%     plot(tn3,u3,'k',tn,dy3,'r')
+%     figure
+%     plot(tn4,u4,'k',tn,dy4,'r')
     
-    dynn1=abs(diff(yn1-y1'));
-    dynn2=abs(diff(yn2-y2'));
-    dynn3=abs(diff(yn3-y3'));
-    dynn4=abs(diff(yn4-y4'));
+    [m n]=size(u1);
     
-    dy1=abs(diff(yo1));
-    dy2=abs(diff(yo2));
-    dy3=abs(diff(yo3));
-    dy4=abs(diff(yo4));
+    a1=zeros(m,n);
+    a2=a1;
+    a3=a1;
+    a4=a1;
+    b1=0;
+    b2=0;
+    b3=0;
+    b4=0;
+    c1=0;
+    c2=0;
+    c3=0;
+    c4=0;
+    for i=1:m
+        
+        if i>60  %tiempo inicial a quitar t(i)
+            
+            if (dy1(i)>u1(i) || b1==1) && c1<2 %dy1(i)>u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy1(i)>u1(i)
+                    c1=c1+1;
+                end
+                a1(i)=1;
+                b1=1;
+                                                   
+            else
+                a1(i)=0;
+                b1=0;
+                c1=0;
+            end
+            
+            if (dy2(i)>u2(i)|| b2==1) && c2<2% dy1(i)<u1(i) && dy2(i)>u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy2(i)>u2(i)
+                    c2=c2+1;
+                end
+                a2(i)=1;
+                b2=1;
+                                                   
+            else
+                a2(i)=0;
+                b2=0;
+                c2=0;
+            end
+            
+            if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
+                 if dy3(i)>u3(i)
+                    c3=c3+1;
+                end
+                a3(i)=1;
+                b3=1;
+                                                   
+            else
+                a3(i)=0;
+                b3=0;
+                c3=0;
+            end
+            
+            if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
+                 if dy4(i)>u4(i)
+                    c4=c4+1;
+                end
+                a4(i)=1;
+                b4=1;
+                                                   
+            else
+                a4(i)=0;
+                b4=0;
+                c4=0;
+            end
+        end
+        
+       
+    end
     
-    % dy1=dy1
+    %Graficas de alarmas
     figure
-    plot(t1(1:end-1),dynn1,'-k')
-    hold on
-    plot(t(1:end-1),dy1,'--r')
-    legend('Der. Residual de red','residual del observador')
-    ylim([0 2])
-    figure
-    plot(t2(1:end-1),dynn2,'-k')
-    hold on
-    plot(t(1:end-1),dy2,'--r')
-    ylim([0 2])
-    legend('Der. Residual de red','residual del observador')
+    subplot(2,2,1)
+    plot(tn1,a1,'LineWidth',1);
+    title('Alarma del sensor 1')
+    subplot(2,2,2)
+    plot(tn2,a2,'LineWidth',1);
+    title('Alarma del sensor 2')
+    subplot(2,2,3)
+    plot(tn3,a3,'LineWidth',1);
+    title('Alarma del sensor 3')
+    subplot(2,2,4)
+    plot(tn4,a4,'LineWidth',1);
+    title('Alarma del sensor 4')
+    
+    
 else
     
     %%----------------ARX: nn_arxout1-----------------
@@ -335,18 +525,134 @@ else
     dy3=abs(diff(yo3));
     dy4=abs(diff(yo4));
     
-    [yupper,ylower] = envelope(dy1);%(dy1,2500,'analytic');%(1.5*dy1,800,'rms');
-    ys=sgolayfilt(dy1,11,101);
+    %Umbral con lag & lead
+    tao1=0.0000002;%0.002;
+    tao2=tao1;
+    taod=1;%tao1;
+    sis1=tf([taod 0],[tao1 1 0]);
+    sis2=tf(1,[tao2 1]);
+    [sal tn]=lsim(sis1,dy1,t(1:1:end-1));
+    [u1 tn1]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy2,t(1:1:end-1));
+    [u2 tn2]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy3,t(1:1:end-1));
+    [u3 tn3]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy4,t(1:1:end-1));
+    [u4 tn4]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    
+    %Umbrales y derivadas de los sensores aislados
     figure
-    plot(t1,dy1(1:end-10,1),'k',t(1:1:end-1),abs(ys),'r')
+    plot(tn1,u1,'k',tn,dy1,'r')
     figure
-    diferencia=dy1-ys;
-    plot(t(1:1:end-1),diferencia)
+    plot(tn2,u2,'k',tn,dy2,'r')
     figure
-    plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
-    [yupper,ylower] = envelope(0.9*dy1);%(dy1,800,'rms');
+    plot(tn3,u3,'k',tn,dy3,'r')
     figure
-    plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
+    plot(tn4,u4,'k',tn,dy4,'r')
+    
+    [m n]=size(u1);
+    
+    a1=zeros(m,n);
+    a2=a1;
+    a3=a1;
+    a4=a1;
+    b1=0;
+    b2=0;
+    b3=0;
+    b4=0;
+    c1=0;
+    c2=0;
+    c3=0;
+    c4=0;
+    for i=1:m
+        
+        if i>60  %tiempo inicial a quitar t(i)
+            
+            if (dy1(i)>u1(i) || b1==1) && c1<2 %dy1(i)>u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy1(i)>u1(i)
+                    c1=c1+1;
+                end
+                a1(i)=1;
+                b1=1;
+                                                   
+            else
+                a1(i)=0;
+                b1=0;
+                c1=0;
+            end
+            
+            if (dy2(i)>u2(i)|| b2==1) && c2<2% dy1(i)<u1(i) && dy2(i)>u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy2(i)>u2(i)
+                    c2=c2+1;
+                end
+                a2(i)=1;
+                b2=1;
+                                                   
+            else
+                a2(i)=0;
+                b2=0;
+                c2=0;
+            end
+            
+            if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
+                 if dy3(i)>u3(i)
+                    c3=c3+1;
+                end
+                a3(i)=1;
+                b3=1;
+                                                   
+            else
+                a3(i)=0;
+                b3=0;
+                c3=0;
+            end
+            
+            if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
+                 if dy4(i)>u4(i)
+                    c4=c4+1;
+                end
+                a4(i)=1;
+                b4=1;
+                                                   
+            else
+                a4(i)=0;
+                b4=0;
+                c4=0;
+            end
+        end
+        
+       
+    end
+    
+    %Graficas de alarmas
+    figure
+    subplot(2,2,1)
+    plot(tn1,a1,'LineWidth',1);
+    title('Alarma del sensor 1')
+    subplot(2,2,2)
+    plot(tn2,a2,'LineWidth',1);
+    title('Alarma del sensor 2')
+    subplot(2,2,3)
+    plot(tn3,a3,'LineWidth',1);
+    title('Alarma del sensor 3')
+    subplot(2,2,4)
+    plot(tn4,a4,'LineWidth',1);
+    title('Alarma del sensor 4')
+    
+    
+    %Umbral con envolvene
+    %     [yupper,ylower] = envelope(dy1);%(dy1,2500,'analytic');%(1.5*dy1,800,'rms');
+    %     ys=sgolayfilt(dy1,11,101);
+    %     figure
+    %     plot(t1,dy1(1:end-10,1),'k',t(1:1:end-1),abs(ys),'r')
+    %     figure
+    %     diferencia=dy1-ys;
+    %     plot(t(1:1:end-1),diferencia)
+    %     figure
+    %     plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
+    %     [yupper,ylower] = envelope(0.9*dy1);%(dy1,800,'rms');
+    %     figure
+    %     plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
     %     figure
     % dy1=dy1
     
@@ -472,94 +778,125 @@ else
     dy3=abs(diff(yo3));
     dy4=abs(diff(yo4));
     
-    [yupper,ylower] = envelope(dy1);%(1.5*dy1,800,'rms');
-    figure
-    t1=t1';
-    plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
-    [yupper,ylower] = envelope(0.9*dy1);%(dy1,800,'rms');
-    figure
-    plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
+    %-----------------Umbral con envolvente
+    %     [yupper,ylower] = envelope(dy1);%(1.5*dy1,800,'rms');
     %     figure
+    %     t1=t1';
+    %     plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
+    %     [yupper,ylower] = envelope(0.9*dy1);%(dy1,800,'rms');
+    %     figure
+    %     plot(t1,dy1(1:end-10,1),'k',t1,yupper(1:end-10,1),'r')
     
-    % dy1=dy1
-    %     figure
-    %     plot(t1(1:end-1),dynn1,'-k')
-    %     hold on
-    %     plot(t(1:end-1),dy1,'--r')
-    %     legend('Der. Residual de red','residual del observador')
-    %     ylim([0 2])
-    %     figure
-    %     plot(t2(1:end-1),dynn2,'-k')
-    %     hold on
-    %     plot(t(1:end-1),dy2,'--r')
-    %     ylim([0 2])
-    %     legend('Der. Residual de red','residual del observador')
+    %-----------------Umbral con lag & lead
+    
+    [sal tn]=lsim(sis1,dy1,t(1:1:end-1));
+    [u1 tn1]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy2,t(1:1:end-1));
+    [u2 tn2]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy3,t(1:1:end-1));
+    [u3 tn3]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    [sal tn]=lsim(sis1,dy4,t(1:1:end-1));
+    [u4 tn4]=lsim(sis2,abs(sal)+(4/3)*0.04,tn);
+    
+    %Umbrales y derivadas de los sensores aislados
+%     figure
+%     plot(tn1,u1,'k',tn,dy1,'r')
+%     figure
+%     plot(tn2,u2,'k',tn,dy2,'r')
+%     figure
+%     plot(tn3,u3,'k',tn,dy3,'r')
+%     figure
+%     plot(tn4,u4,'k',tn,dy4,'r')
+    
+    [m n]=size(u1);
+    
+    a1=zeros(m,n);
+    a2=a1;
+    a3=a1;
+    a4=a1;
+    b1=0;
+    b2=0;
+    b3=0;
+    b4=0;
+    c1=0;
+    c2=0;
+    c3=0;
+    c4=0;
+    for i=1:m
+        
+        if i>60  %tiempo inicial a quitar t(i)
+            
+            if (dy1(i)>u1(i) || b1==1) && c1<2 %dy1(i)>u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy1(i)>u1(i)
+                    c1=c1+1;
+                end
+                a1(i)=1;
+                b1=1;
+                                                   
+            else
+                a1(i)=0;
+                b1=0;
+                c1=0;
+            end
+            
+            if (dy2(i)>u2(i)|| b2==1) && c2<2% dy1(i)<u1(i) && dy2(i)>u2(i) && dy3(i)<u3(i) && dy4(i)<u4(i)
+                if dy2(i)>u2(i)
+                    c2=c2+1;
+                end
+                a2(i)=1;
+                b2=1;
+                                                   
+            else
+                a2(i)=0;
+                b2=0;
+                c2=0;
+            end
+            
+            if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
+                 if dy3(i)>u3(i)
+                    c3=c3+1;
+                end
+                a3(i)=1;
+                b3=1;
+                                                   
+            else
+                a3(i)=0;
+                b3=0;
+                c3=0;
+            end
+            
+            if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
+                 if dy4(i)>u4(i)
+                    c4=c4+1;
+                end
+                a4(i)=1;
+                b4=1;
+                                                   
+            else
+                a4(i)=0;
+                b4=0;
+                c4=0;
+            end
+        end
+        
+       
+    end
+    
+    %Graficas de alarmas
+    figure
+    subplot(2,2,1)
+    plot(tn1,a1,'LineWidth',1);
+    title('Alarma del sensor 1')
+    subplot(2,2,2)
+    plot(tn2,a2,'LineWidth',1);
+    title('Alarma del sensor 2')
+    subplot(2,2,3)
+    plot(tn3,a3,'LineWidth',1);
+    title('Alarma del sensor 3')
+    subplot(2,2,4)
+    plot(tn4,a4,'LineWidth',1);
+    title('Alarma del sensor 4')
+    
+    
     
 end
-
-% figure
-% plot(t1,yn1-y1','-k')
-% hold on
-% plot(t,yo1,'--r')
-% % ylim([0 2])
-% legend('Residual de red','residual del observador')
-% figure
-% plot(t2,yn2-y2','-k')
-% hold on
-% plot(t,yo2,'--r')
-% legend('Residual de red','residual del observador')
-
-
-% figure
-% plot(dyn1)
-% hold on
-% plot(dynn1)
-
-% figure
-% plot(t3(1:end-1),dyn3,'-k')
-% hold on
-% plot(t(1:end-1),dy3,'--r')
-% figure
-% plot(t4(1:end-1),dyn4,'-k')
-% hold on
-% plot(t(1:end-1),dy4,'--r')
-
-% plot(t1,yn1,'-k')
-% figure
-% plot(t2,yn2,'-k')
-% figure
-% plot(t3,yn3,'-k')
-% figure
-% plot(t4,yn4,'-k')
-
-
-% figure
-% plot(t1,yn1,'k')
-% figure
-% plot(t2,yn2,'k')
-% figure
-% plot(t3,yn3,'k')
-% figure
-% plot(t4,yn4,'k')
-
-
-
-% gensim(net1,tm);
-% gensim(net2,tm);
-% gensim(net3,tm);
-% gensim(net4,tm);
-
-% figure
-% [m n]=size(y2);
-% for i=1:n
-% subplot(n,1,i)
-% % plot(t(1:end-1),y(1:end-1,i),'-r',t2,y2(:,i),':b')
-% plot(t(1:end-11),y(1:end-11,i),'-r',t2,y2(:,i),':b')
-%
-% end
-
-% figure
-% for i=1:n
-% subplot(n,1,i)
-% plot(t(1:end-1),abs(y(1:end-1,i)-y2(:,i)),':b')
-% end

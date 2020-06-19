@@ -628,7 +628,7 @@ C12o=Cd(3,:);
 % sis=ss(A,B,C,D);
 
 
-ataque=0;
+ataque=1;
 clc
 
 %umbral adaptativo
@@ -638,11 +638,11 @@ polo_dom=max(real(polos));
 tao1=(-1/polo_dom)/4;
 tao1=0.002;
 tao2=tao1;
-taod=tao1;
+taod=1;%tao1;
 
-bode(tf([taod 0],[tao1 1 0])*tf(1,[tao2 1]))
-hold on
-bode(tf([taod 0],[tao1 1])*tf(1,[tao2 1]))
+% bode(tf([taod 0],[tao1 1 0])*tf(1,[tao2 1]))
+% hold on
+% bode(tf([taod 0],[tao1 1])*tf(1,[tao2 1]))
 %%Ajuste de constante
 %UIO1
 c11=0.04;
