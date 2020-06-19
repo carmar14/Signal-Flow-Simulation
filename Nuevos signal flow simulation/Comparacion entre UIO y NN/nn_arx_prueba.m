@@ -682,7 +682,7 @@ else
     % ylim([0 2])
     
     %Datos de entrada y salida
-    load('datos_ataque_multiple.mat');
+    load('datos_ataque_multiple_2.mat');
     
     %Promedio de los UIOs
     yo1=y1;
