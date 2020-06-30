@@ -33,61 +33,66 @@ function [E,T,K,H]=uio_linear (A,B,C,Fd)
 
 % 0 ) Check input cond i t ions
 if nargin ~=4
-error( 'Number of input arguments incorrect! type_help_uio_chen' )  
-return
+    error( 'Number of input arguments incorrect! type_help_uio_chen' )
+    return
 end
 
 % 1 a ) The number of ouputs ( row of C) must be g r eat e r
 % than the number of unknown input s (Column of Fd)
-nb_Fd=size(Fd); 
-nb_C=size(C); 
+nb_Fd=size(Fd);
+nb_C=size(C);
 nb_row_C=nb_C(1);
 nb_column_Fd=nb_Fd(2);
 if ( nb_column_Fd > nb_row_C )
-error('The number o f ouputs ( row o f C) must be g r e a te r than the number o f unknown inputs ( column o f Fd)' )
-return
+    error('The number o f ouputs ( row o f C) must be g r e a te r than the number o f unknown inputs ( column o f Fd)' )
+    return
 end
 
 % 1 b ) Check the rank condit ion for Fd and CFd
 if (rank(C*Fd) ~= rank(Fd) )
-error('rank(C*Fd)==rank (Fd)' ) 
-return 
+    error('rank(C*Fd)==rank (Fd)' )
+    return
 end
 % 2 ) Compute H, T, and A1
-nb_A=size(A); 
+nb_A=size(A);
 H=Fd*inv((C*Fd)'*(C*Fd))*(C*Fd)';
-T=eye(nb_A(1))-(H*C) ;  
+T=eye(nb_A(1))-(H*C) ;
 A1=T*A;
 % 3 ) Check the observability : If (C, A1) observable ,
 % a UIO exits and K1 can be computed us ing pole
 % placement
 o=0;
-if (rank(obsv(A1,C)) ~= nb_A(1) ) 
-display('(C,A1) should be observable') 
-% return ,
-o=1;
+if (rank(obsv(A1,C)) ~= nb_A(1) )
+    display('(C,A1) should be observable')
+    % return ,
+    o=1;
 end
 
 if o==1
     [ABAR,BBAR,CBAR,TOM,KnO] = obsvf(A1,B,C); % If it is necessary
-    P = TOM; % similarity transformation 
+    P = TOM; % similarity transformation
     Ao = ABAR(11,11);
     Cstar = CBAR(1,11);
     pd = 0.0001;%0.001;
     Kpsp2 = (Ao - pd)/Cstar;
-%     K1 = inv(P)*[1 1 1 1 Kpsp2]';
+    %     K1 = inv(P)*[1 1 1 1 Kpsp2]';
     K1 = inv(P)*[1 1 1 1 1 1 1 1 1 1 Kpsp2]';
+    %Segun paper
+%     pole=eig(A1);
+%     K1p=place(A',C',[0.9* pole]) ;
+%     K1=inv(P)*();
+    
 else
     
-%     K1 = inv(P)*[1 1 1 1 Kpsp2;1 1 1 1 Kpsp2;1 1 1 1 Kpsp2]';
-
-    pole=eig(A1); 
-    K1=place(A',C',[0.9* pole]) ; 
-%     K1=acker(A',C',[0.999* pole]) ; 
+    %     K1 = inv(P)*[1 1 1 1 Kpsp2;1 1 1 1 Kpsp2;1 1 1 1 Kpsp2]';
+    
+    pole=eig(A1);
+    K1=place(A',C',[0.9* pole]) ;
+    %     K1=acker(A',C',[0.999* pole]) ;
     K1=K1';
 end
 % 4 ) Compute E, K to b u i l t the f o l l owi n g UIO
-E=A1-K1*C; 
+E=A1-K1*C;
 K=K1+E*H;
 
 end
