@@ -139,19 +139,13 @@ if i==1
     
     %Umbrales y derivadas de los sensores aislados
     figure
-    subplot(2,2,1)
     plot(tn1,u1,'k',tn,dy1,'r')
-    legend('Umbral adaptativo 1','Residual 1')
-    subplot(2,2,2)
+    figure
     plot(tn2,u2,'k',tn,dy2,'r')
-    legend('Umbral adaptativo 2','Residual 2')
-    subplot(2,2,3)
+    figure
     plot(tn3,u3,'k',tn,dy3,'r')
-    legend('Umbral adaptativo 3','Residual 3')
-    subplot(2,2,4)
+    figure
     plot(tn4,u4,'k',tn,dy4,'r')
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales(NN) ataques individuales')
     
     [m n]=size(u1);
     
@@ -241,13 +235,11 @@ if i==1
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
     title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores ataques individuales (NN)')
     
     
     
     %Datos de entrada y salida
-%     load('datos_ataque_multiple_2.mat');
-    load('datos_ataque_multiple.mat');
+    load('datos_ataque_multiple_2.mat');
     
     
     yo1=y1;
@@ -348,20 +340,14 @@ if i==1
     [u4 tn4]=lsim(sis2,abs(sal)+(4/3)*1.5,tn);
     
     %Umbrales y derivadas de los sensores aislados
-    figure
-    subplot(2,2,1)
-    plot(tn1,u1,'k',tn,dy1,'r')
-    legend('Umbral adaptativo 1','Residual 1')
-    subplot(2,2,2)
-    plot(tn2,u2,'k',tn,dy2,'r')
-    legend('Umbral adaptativo 2','Residual 2')
-    subplot(2,2,3)
-    plot(tn3,u3,'k',tn,dy3,'r')
-    legend('Umbral adaptativo 3','Residual 3')
-    subplot(2,2,4)
-    plot(tn4,u4,'k',tn,dy4,'r')
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales(NN) ataques simultaneos')
+%     figure
+%     plot(tn1,u1,'k',tn,dy1,'r')
+%     figure
+%     plot(tn2,u2,'k',tn,dy2,'r')
+%     figure
+%     plot(tn3,u3,'k',tn,dy3,'r')
+%     figure
+%     plot(tn4,u4,'k',tn,dy4,'r')
     
     [m n]=size(u1);
     
@@ -451,7 +437,6 @@ if i==1
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
     title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores ataques simultaneos (NN)')
     
     
 else
@@ -704,8 +689,7 @@ else
     % ylim([0 2])
     
     %Datos de entrada y salida
-    %load('datos_ataque_multiple_2.mat');
-    load('datos_ataque_multiple.mat');
+    load('datos_ataque_multiple_2.mat');
     
     %Promedio de los UIOs
     yo1=y1;
@@ -835,7 +819,7 @@ else
     subplot(2,2,4)
     plot(tn4,u4,'k',tn,dy4,'r')
     legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales ataques simultaneos')
+    suptitle('Umbrales y derivadas de residuales ataques simultaneaos')
     
     [m n]=size(u1);
     
@@ -925,7 +909,7 @@ else
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
     title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores ataques simultaneos')
+    suptitle('Alarmas de sensores ataques simultaenos')
     
     
     
