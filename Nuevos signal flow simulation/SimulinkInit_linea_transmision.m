@@ -272,16 +272,16 @@ C12o=Cd(3,:);
 [F3,T3,K3U,H3]=uio_linear (Ad,Bd,C3o,Fd3);
 % UIO para medida 2
 [F4,T4,K4U,H4]=uio_linear (Ad,Bd,C4o,Fd4);
-[F5,T5,K5U,H5]=uio_linear (Ad,Bd,C5o,Fd5);
-[F6,T6,K6U,H6]=uio_linear (Ad,Bd,C6o,Fd6);
-% UIO para medida 3
-[F7,T7,K7U,H7]=uio_linear (Ad,Bd,C7o,Fd7);
-[F8,T8,K8U,H8]=uio_linear (Ad,Bd,C8o,Fd8);
-[F9,T9,K9U,H9]=uio_linear (Ad,Bd,C9o,Fd9);
-% UIO para medida 4
-[F10,T10,K10U,H10]=uio_linear (Ad,Bd,C10o,Fd10);
-[F11,T11,K11U,H11]=uio_linear (Ad,Bd,C11o,Fd11);
-[F12,T12,K12U,H12]=uio_linear (Ad,Bd,C12o,Fd12);
+% [F5,T5,K5U,H5]=uio_linear (Ad,Bd,C5o,Fd5);
+% [F6,T6,K6U,H6]=uio_linear (Ad,Bd,C6o,Fd6);
+% % UIO para medida 3
+% [F7,T7,K7U,H7]=uio_linear (Ad,Bd,C7o,Fd7);
+% [F8,T8,K8U,H8]=uio_linear (Ad,Bd,C8o,Fd8);
+% [F9,T9,K9U,H9]=uio_linear (Ad,Bd,C9o,Fd9);
+% % UIO para medida 4
+% [F10,T10,K10U,H10]=uio_linear (Ad,Bd,C10o,Fd10);
+% [F11,T11,K11U,H11]=uio_linear (Ad,Bd,C11o,Fd11);
+% [F12,T12,K12U,H12]=uio_linear (Ad,Bd,C12o,Fd12);
 
 % Matrices del sistema desde el inversor hacia la carga sin el controlador
 % A=[-R1/L1 zeros(1,6) -1/L1 zeros(1,3);
@@ -588,16 +588,16 @@ C12o=Cd(3,:);
 [F3,T3,K3U,H3]=uio_linear (Ad,Bd,C3o,Fd3);
 % UIO para medida 2
 [F4,T4,K4U,H4]=uio_linear (Ad,Bd,C4o,Fd4);
-[F5,T5,K5U,H5]=uio_linear (Ad,Bd,C5o,Fd5);
-[F6,T6,K6U,H6]=uio_linear (Ad,Bd,C6o,Fd6);
-% UIO para medida 3
-[F7,T7,K7U,H7]=uio_linear (Ad,Bd,C7o,Fd7);
-[F8,T8,K8U,H8]=uio_linear (Ad,Bd,C8o,Fd8);
-[F9,T9,K9U,H9]=uio_linear (Ad,Bd,C9o,Fd9);
-% UIO para medida 4
-[F10,T10,K10U,H10]=uio_linear (Ad,Bd,C10o,Fd10);
-[F11,T11,K11U,H11]=uio_linear (Ad,Bd,C11o,Fd11);
-[F12,T12,K12U,H12]=uio_linear (Ad,Bd,C12o,Fd12);
+% [F5,T5,K5U,H5]=uio_linear (Ad,Bd,C5o,Fd5);
+% [F6,T6,K6U,H6]=uio_linear (Ad,Bd,C6o,Fd6);
+% % UIO para medida 3
+% [F7,T7,K7U,H7]=uio_linear (Ad,Bd,C7o,Fd7);
+% [F8,T8,K8U,H8]=uio_linear (Ad,Bd,C8o,Fd8);
+% [F9,T9,K9U,H9]=uio_linear (Ad,Bd,C9o,Fd9);
+% % UIO para medida 4
+% [F10,T10,K10U,H10]=uio_linear (Ad,Bd,C10o,Fd10);
+% [F11,T11,K11U,H11]=uio_linear (Ad,Bd,C11o,Fd11);
+% [F12,T12,K12U,H12]=uio_linear (Ad,Bd,C12o,Fd12);
 
 % Matrices del sistema desde el inversor hacia la carga sin el controlador
 % A=[-R1/L1 zeros(1,6) -1/L1 zeros(1,3);
@@ -668,7 +668,65 @@ c42=0.04;
 c43=1.7;
 c44=0.3;
 
+%Reduccion del sistema para los UIOs
+% hsvplot(sys)
+opts = balredOptions('StateElimMethod','Truncate');
+sisr = balred(sys,4,opts);
+sysdr=c2d(sisr,tm);
+Adr=sysdr.A;
+Bdr=sysdr.B;
+Cdr=sysdr.C;
+Ddr=sysdr.D;
 % 
+
+
+% Fd1=[1.0e-4;1;1e-4;1.0e-4];
+% C1o=Cdr(2,:);
+% Fd2=[1.0e-4;1e-4;1;1.0e-4];
+% C2o=Cdr(3,:);
+% Fd3=[1.0e-4;1e-4;1e-4;1.0];
+% C3o=Cdr(4,:);
+% Fd4=[1.0;1e-4;1e-4;1.0e-4];
+% C4o=Cdr(1,:);
+% % UIO modelos reducidos
+% [F1,T1,K1U,H1]=uio_linear (Adr,Bdr,C1o,Fd1);
+% [F2,T2,K2U,H2]=uio_linear (Adr,Bdr,C2o,Fd2);
+% [F3,T3,K3U,H3]=uio_linear (Adr,Bdr,C3o,Fd3);
+% [F4,T4,K4U,H4]=uio_linear (Adr,Bdr,C4o,Fd4);
+
+%Reduccion de los observadores UIOs
+uio1=ss(F1,[T1*Bd K1U],Cd*eye(11),Cd*[zeros(11,3) H1],tm);
+% hsvplot(uio1)
+opts = balredOptions('StateElimMethod','Truncate');
+uio1r = balred(uio1,7,opts);
+step(uio1,uio1r)
+
+figure
+uio2=ss(F2,[T2*Bd K2U],Cd*eye(11),Cd*[zeros(11,3) H2],tm);
+% hsvplot(uio1)
+opts = balredOptions('StateElimMethod','Truncate');
+uio2r = balred(uio2,7,opts);
+step(uio2,uio2r)
+
+figure
+uio3=ss(F3,[T3*Bd K3U],Cd*eye(11),Cd*[zeros(11,3) H3],tm);
+% hsvplot(uio1)
+opts = balredOptions('StateElimMethod','Truncate');
+uio3r = balred(uio3,9,opts); %9
+step(uio3,uio3r)
+
+figure
+uio4=ss(F4,[T4*Bd K4U],Cd*eye(11),Cd*[zeros(11,3) H4],tm);
+% hsvplot(uio1)
+opts = balredOptions('StateElimMethod','Truncate');
+uio4r = balred(uio4,7,opts);
+step(uio4,uio4r)
+
+close all
+% 
+
+
+
 %%%Funciones de transferencia
 %  h=tf([RL*L RL*R],[Cl*RL*L  (R*RL*Cl+L) RL+R]);
 % h2=tf(1,conv([L1 R1],[C1*L4 R4*C1 1])+[0 0 L4 R4]);
