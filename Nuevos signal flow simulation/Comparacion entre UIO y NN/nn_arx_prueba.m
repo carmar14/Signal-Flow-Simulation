@@ -15,7 +15,7 @@ yo3=y3;
 yo4=y4;
 
 %Modelos de redes neuronales para cada salida [y1 y2 y3 y4]'
-i=2; %i=1 NN con varias salidas i~=1 NN con salida única
+i=1; %i=1 NN con varias salidas i~=1 NN con salida única
 if i==1
     load('nnwy1.mat');
     net1=net;
@@ -117,7 +117,7 @@ if i==1
     ynn2=(yn1+yn3+yn4-3*y_ma(12:end,:))/3;
     ynn3=(yn2+yn1+yn4-3*y_ma(12:end,:))/3;
     ynn4=(yn2+yn3+yn1-3*y_ma(12:end,:))/3;
-      
+    
     
     dy1=abs(diff(ynn1(:,1)'));
     dy2=abs(diff(ynn2(:,2)''));
@@ -143,21 +143,25 @@ if i==1
     figure
     subplot(2,2,1)
     plot(tn1,u1,'k',tn,dy1,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 1','Residual 1')
     ylim([0 1])
-    legend('Umbral adaptativo 1','Residual 1')
     subplot(2,2,2)
     plot(tn2,u2,'k',tn,dy2,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 2','Residual 2')
     ylim([0 1])
-    legend('Umbral adaptativo 2','Residual 2')
     subplot(2,2,3)
     plot(tn3,u3,'k',tn,dy3,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 3','Residual 3')
     ylim([0 1])
-    legend('Umbral adaptativo 3','Residual 3')
     subplot(2,2,4)
     plot(tn4,u4,'k',tn,dy4,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 4','Residual 4')
     ylim([0 1])
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales(NN) en ataques individuales')
+    %     suptitle('Umbrales y derivadas de residuales(NN) en ataques individuales')
     
     [m n]=size(u1);
     
@@ -183,7 +187,7 @@ if i==1
                 end
                 a1(i)=1;
                 b1=1;
-                                                   
+                
             else
                 a1(i)=0;
                 b1=0;
@@ -196,7 +200,7 @@ if i==1
                 end
                 a2(i)=1;
                 b2=1;
-                                                   
+                
             else
                 a2(i)=0;
                 b2=0;
@@ -204,12 +208,12 @@ if i==1
             end
             
             if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
-                 if dy3(i)>u3(i)
+                if dy3(i)>u3(i)
                     c3=c3+1;
                 end
                 a3(i)=1;
                 b3=1;
-                                                   
+                
             else
                 a3(i)=0;
                 b3=0;
@@ -217,12 +221,12 @@ if i==1
             end
             
             if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
-                 if dy4(i)>u4(i)
+                if dy4(i)>u4(i)
                     c4=c4+1;
                 end
                 a4(i)=1;
                 b4=1;
-                                                   
+                
             else
                 a4(i)=0;
                 b4=0;
@@ -230,33 +234,33 @@ if i==1
             end
         end
         
-       
+        
     end
     
     %Graficas de alarmas
     figure
     subplot(2,2,1)
     plot(tn1,a1,'LineWidth',1);
-    ylim([0 1])
-    title('Alarma del sensor 1')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 1')
     subplot(2,2,2)
     plot(tn2,a2,'LineWidth',1);
-    ylim([0 1])
-    title('Alarma del sensor 2')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 2')
     subplot(2,2,3)
     plot(tn3,a3,'LineWidth',1);
-    ylim([0 1])
-    title('Alarma del sensor 3')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 3')
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
-    ylim([0 1])
-    title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores en ataques individuales (NN)')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 4')
+%     suptitle('Alarmas de sensores en ataques individuales (NN)')
     
     
     
     %Datos de entrada y salida
-%     load('datos_ataque_multiple_2.mat');
+    %     load('datos_ataque_multiple_2.mat');
     load('datos_ataque_multiple.mat');
     
     
@@ -336,7 +340,7 @@ if i==1
     yn4=net4(phi4);
     yn4=yn4';
     t4=0:tm:length(yn4)*tm-tm;
-       
+    
     dy1=abs(diff(yn1(:,1)'));
     dy2=abs(diff(yn2(:,2)'));
     dy3=abs(diff(yn3(:,3)'));
@@ -361,21 +365,25 @@ if i==1
     figure
     subplot(2,2,1)
     plot(tn1,u1,'k',tn,dy1,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 1','Residual 1')
     ylim([0 1])
-    legend('Umbral adaptativo 1','Residual 1')
     subplot(2,2,2)
     plot(tn2,u2,'k',tn,dy2,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 2','Residual 2')
     ylim([0 1])
-    legend('Umbral adaptativo 2','Residual 2')
     subplot(2,2,3)
     plot(tn3,u3,'k',tn,dy3,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 3','Residual 3')
     ylim([0 1])
-    legend('Umbral adaptativo 3','Residual 3')
     subplot(2,2,4)
     plot(tn4,u4,'k',tn,dy4,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 4','Residual 4')
     ylim([0 1])
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales(NN) en ataques simultáneos')
+%     suptitle('Umbrales y derivadas de residuales(NN) en ataques simultáneos')
     
     [m n]=size(u1);
     
@@ -401,7 +409,7 @@ if i==1
                 end
                 a1(i)=1;
                 b1=1;
-                                                   
+                
             else
                 a1(i)=0;
                 b1=0;
@@ -414,7 +422,7 @@ if i==1
                 end
                 a2(i)=1;
                 b2=1;
-                                                   
+                
             else
                 a2(i)=0;
                 b2=0;
@@ -422,12 +430,12 @@ if i==1
             end
             
             if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
-                 if dy3(i)>u3(i)
+                if dy3(i)>u3(i)
                     c3=c3+1;
                 end
                 a3(i)=1;
                 b3=1;
-                                                   
+                
             else
                 a3(i)=0;
                 b3=0;
@@ -435,12 +443,12 @@ if i==1
             end
             
             if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
-                 if dy4(i)>u4(i)
+                if dy4(i)>u4(i)
                     c4=c4+1;
                 end
                 a4(i)=1;
                 b4=1;
-                                                   
+                
             else
                 a4(i)=0;
                 b4=0;
@@ -448,24 +456,29 @@ if i==1
             end
         end
         
-       
+        
     end
     
     %Graficas de alarmas
     figure
     subplot(2,2,1)
     plot(tn1,a1,'LineWidth',1);
-    title('Alarma del sensor 1')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 1')
     subplot(2,2,2)
     plot(tn2,a2,'LineWidth',1);
-    title('Alarma del sensor 2')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 2')
     subplot(2,2,3)
     plot(tn3,a3,'LineWidth',1);
-    title('Alarma del sensor 3')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 3')
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
-    title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores en ataques simultáneos (NN)')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 4')
+
+%     suptitle('Alarmas de sensores en ataques simultáneos (NN)')
     
     
 else
@@ -573,21 +586,26 @@ else
     figure
     subplot(2,2,1)
     plot(tn1,u1,'k',tn,dy1,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 1','Residual 1')
     ylim([0 1])
-    legend('Umbral adaptativo 1','Residual 1')
     subplot(2,2,2)
     plot(tn2,u2,'k',tn,dy2,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 2','Residual 2')
     ylim([0 1])
-    legend('Umbral adaptativo 2','Residual 2')
     subplot(2,2,3)
     plot(tn3,u3,'k',tn,dy3,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 3','Residual 3')
     ylim([0 1])
-    legend('Umbral adaptativo 3','Residual 3')
     subplot(2,2,4)
     plot(tn4,u4,'k',tn,dy4,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 4','Residual 4')
     ylim([0 1])
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales en ataques individuales')
+    
+    %     suptitle('Umbrales y derivadas de residuales en ataques individuales')
     
     [m n]=size(u1);
     
@@ -613,7 +631,7 @@ else
                 end
                 a1(i)=1;
                 b1=1;
-                                                   
+                
             else
                 a1(i)=0;
                 b1=0;
@@ -626,7 +644,7 @@ else
                 end
                 a2(i)=1;
                 b2=1;
-                                                   
+                
             else
                 a2(i)=0;
                 b2=0;
@@ -634,12 +652,12 @@ else
             end
             
             if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
-                 if dy3(i)>u3(i)
+                if dy3(i)>u3(i)
                     c3=c3+1;
                 end
                 a3(i)=1;
                 b3=1;
-                                                   
+                
             else
                 a3(i)=0;
                 b3=0;
@@ -647,12 +665,12 @@ else
             end
             
             if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
-                 if dy4(i)>u4(i)
+                if dy4(i)>u4(i)
                     c4=c4+1;
                 end
                 a4(i)=1;
                 b4=1;
-                                                   
+                
             else
                 a4(i)=0;
                 b4=0;
@@ -660,24 +678,28 @@ else
             end
         end
         
-       
+        
     end
     
     %Graficas de alarmas
     figure
     subplot(2,2,1)
     plot(tn1,a1,'LineWidth',1);
-    title('Alarma del sensor 1')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 1')
     subplot(2,2,2)
     plot(tn2,a2,'LineWidth',1);
-    title('Alarma del sensor 2')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 2')
     subplot(2,2,3)
     plot(tn3,a3,'LineWidth',1);
-    title('Alarma del sensor 3')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 3')
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
-    title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores en ataques individuales')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 4')
+    %     suptitle('Alarmas de sensores en ataques individuales')
     
     
     %Umbral con envolvene
@@ -723,12 +745,12 @@ else
     
     %Datos de entrada y salida
     %load('datos_ataque_multiple_2.mat');
-    load('datos_ataque_multiple.mat');
-%     load('ataque_simultaneo_red.mat');
+    %     load('datos_ataque_multiple.mat');
+    load('ataque_simultaneo_red.mat');
     
-    
-    tm=tm*2;
-    
+    if tm==1e-5
+        tm=tm*2;
+    end
     %Promedio de los UIOs
     yo1=y1;
     yo2=y2;
@@ -847,21 +869,25 @@ else
     figure
     subplot(2,2,1)
     plot(tn1,u1,'k',tn,dy1,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 1','Residual 1')
     ylim([0 1])
-    legend('Umbral adaptativo 1','Residual 1')
     subplot(2,2,2)
     plot(tn2,u2,'k',tn,dy2,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 2','Residual 2')
     ylim([0 1])
-    legend('Umbral adaptativo 2','Residual 2')
     subplot(2,2,3)
     plot(tn3,u3,'k',tn,dy3,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 3','Residual 3')
     ylim([0 1])
-    legend('Umbral adaptativo 3','Residual 3')
     subplot(2,2,4)
     plot(tn4,u4,'k',tn,dy4,'r')
+    xlabel('Time (seconds)')
+    legend('Adaptive threshold 4','Residual 4')
     ylim([0 1])
-    legend('Umbral adaptativo 4','Residual 4')
-    suptitle('Umbrales y derivadas de residuales en ataques simultáneos')
+    %     suptitle('Umbrales y derivadas de residuales en ataques simultáneos')
     
     [m n]=size(u1);
     
@@ -887,7 +913,7 @@ else
                 end
                 a1(i)=1;
                 b1=1;
-                                                   
+                
             else
                 a1(i)=0;
                 b1=0;
@@ -900,7 +926,7 @@ else
                 end
                 a2(i)=1;
                 b2=1;
-                                                   
+                
             else
                 a2(i)=0;
                 b2=0;
@@ -908,12 +934,12 @@ else
             end
             
             if (dy3(i)>u3(i)|| b3==1) && c3<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)>u3(i) && dy4(i)<u4(i)
-                 if dy3(i)>u3(i)
+                if dy3(i)>u3(i)
                     c3=c3+1;
                 end
                 a3(i)=1;
                 b3=1;
-                                                   
+                
             else
                 a3(i)=0;
                 b3=0;
@@ -921,12 +947,12 @@ else
             end
             
             if (dy4(i)>u4(i)|| b4==1) && c4<2 %dy1(i)<u1(i) && dy2(i)<u2(i) && dy3(i)<u3(i) && dy4(i)>u4(i)
-                 if dy4(i)>u4(i)
+                if dy4(i)>u4(i)
                     c4=c4+1;
                 end
                 a4(i)=1;
                 b4=1;
-                                                   
+                
             else
                 a4(i)=0;
                 b4=0;
@@ -934,24 +960,28 @@ else
             end
         end
         
-       
+        
     end
     
     %Graficas de alarmas
     figure
     subplot(2,2,1)
     plot(tn1,a1,'LineWidth',1);
-    title('Alarma del sensor 1')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 1')
     subplot(2,2,2)
     plot(tn2,a2,'LineWidth',1);
-    title('Alarma del sensor 2')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 2')
     subplot(2,2,3)
     plot(tn3,a3,'LineWidth',1);
-    title('Alarma del sensor 3')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 3')
     subplot(2,2,4)
     plot(tn4,a4,'LineWidth',1);
-    title('Alarma del sensor 4')
-    suptitle('Alarmas de sensores en ataques simultáneos')
+    xlabel('Time (seconds)')
+    title('Sensor alarm 4')
+    %     suptitle('Alarmas de sensores en ataques simultáneos')
     
     
     
