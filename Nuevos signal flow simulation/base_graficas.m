@@ -8,3 +8,8 @@ ylabel('$V$','fontsize',14,'interpreter','latex')
 xlabel('$Tiempo(seg)$','fontsize',14,'interpreter','latex')
 %legend('$V_{carga}$','$Ref$','fontsize',14,'interpreter','latex')
 title('Acción de control en el VSI','fontsize',14,'interpreter','latex')
+
+ylabel('$pH$','fontsize',14,'interpreter','latex')
+xlabel('$Tiempo(min)$','fontsize',14,'interpreter','latex')
+legend('$Ref$','$pH / Maestro$','$pH / Esclavo$','fontsize',14,'interpreter','latex')
+title('Proceso de control de pH','fontsize',14,'interpreter','latex')
